@@ -13,8 +13,8 @@ const UserResolvers = {
       console.log(user);
       return user;
     },
-    user(parent, { id }) {
-      return _.find(users, (user) => user.id === id);
+    user(parent, { pk }) {
+      return _.find(users, (user) => user.pk === pk);
     },
   },
   Mutation: {
@@ -24,13 +24,13 @@ const UserResolvers = {
         throw new Error("No User Found");
       }
       // const isEqual = bcrypt.compare(password, currentUser.password);
-      const { id, isAdmin, name } = currentUser;
+      const { pk, isAdmin, name } = currentUser;
       const token = jwt.sign(
-        { id, name, email, isAdmin },
+        { pk, name, email, isAdmin },
         process.env.JWT_SECRET,
         {
           algorithm: "HS256",
-          subject: id,
+          subject: pk,
           expiresIn: "1h",
         }
       );
@@ -51,7 +51,7 @@ const UserResolvers = {
 
 const UserTypes = gql`
   type User {
-    id: ID!
+    pk: ID!
     name: String
     email: String
     isAdmin: Boolean
@@ -59,7 +59,7 @@ const UserTypes = gql`
 
   type Query {
     me: User!
-    user(id: ID!): User
+    user(pk: ID!): User
   }
 
   type Mutation {
