@@ -4,7 +4,7 @@ const { isAdmin, isAuthenticated } = require("../permissions");
 const { users } = require("../data");
 const { gql } = require("apollo-server-express");
 const jwt = require("jsonwebtoken");
-const { and, or, shield } = require("graphql-shield");
+const { and, or } = require("graphql-shield");
 require("dotenv").config();
 
 const UserResolvers = {
