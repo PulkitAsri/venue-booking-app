@@ -24,10 +24,15 @@ const mutationPermissions = _.assign(
 //   Mutation: mutationPermissions,
 // });
 
-const permissions = shield({
-  Query: queryPermissions,
-  Mutation: mutationPermissions,
-});
+const permissions = shield(
+  {
+    Query: queryPermissions,
+    Mutation: mutationPermissions,
+  },
+  {
+    debug: true,
+  }
+);
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 

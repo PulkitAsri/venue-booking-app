@@ -24,16 +24,17 @@ const OrgResolvers = {
 
 const OrgTypes = gql`
   type Org {
-    pk: ID!
+    id: ID!
+    pk: String!
     orgName: String
-    email: String
-    website: String
-    address: String
-    ownerPk: ID!
+    email: String!
+    website: String!
+    address: String!
+    ownerPk: User!
   }
 
   type Query {
-    org(pk: ID!): Org
+    org(pk: String!): Org
   }
 
   type Mutation {

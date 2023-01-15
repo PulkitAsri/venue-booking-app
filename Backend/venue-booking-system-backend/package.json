@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "server": "nodemon -r ./src/index.js",
-    "step": "node -r scripts/step.js",
+    "migrate":"sequelize-cli db:migrate",
+    "migrate-undo": "npx sequelize-cli db:migrate:undo",
     "build": "babel src -d lib"
   },
   "keywords": [],
@@ -16,13 +17,17 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-jwt": "^6.0.0",
     "graphql": "^16.6.0",
     "graphql-middleware": "^6.1.33",
     "graphql-shield": "^7.6.5",
     "jsonwebtoken": "^9.0.0",
     "nodemon": "^2.0.20",
-    "express-jwt": "^6.0.0"
-
+    "path": "^0.12.7",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.28.0",
+    "sequelize-cli": "^6.5.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.20.7",
