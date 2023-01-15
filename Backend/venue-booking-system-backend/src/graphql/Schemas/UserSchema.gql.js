@@ -2,56 +2,57 @@ const _ = require("lodash");
 const bcrypt = require("bcryptjs");
 const { isAdmin, isAuthenticated } = require("../permissions");
 const { users } = require("../data");
-const { gql } = require("apollo-server-express");
+const { gql, AuthenticationError } = require("apollo-server-express");
 const jwt = require("jsonwebtoken");
 const { and, or } = require("graphql-shield");
 const { User } = require("../../db/models");
+const {
+  getUserByEmail,
+  getOrCreateUser,
+  generateToken,
+  getUserByPk,
+} = require("../../modules/user/userModule");
 require("dotenv").config();
 
 const UserResolvers = {
   Query: {
     me(parent, args, { user }) {
-      console.log(user);
       return user;
     },
     user(parent, { pk }) {
-      return _.find(users, (user) => user.pk === pk);
+      return getUserByPk({ pk });
     },
   },
   Mutation: {
-    login(parent, { email, password }) {
-      const currentUser = _.find(users, (user) => user.email === email);
-      if (!currentUser) {
-        throw new Error("No User Found");
+    async login(parent, { email, password }) {
+      const user = await getUserByEmail({ email });
+
+      if (user && bcrypt.compareSync(password, user.password)) {
+        const token = await generateToken({ user });
+        return { user, token };
+      } else {
+        throw new AuthenticationError("Invalid Credentials");
       }
-      const { pk, isAdmin, name } = currentUser;
-      const token = jwt.sign(
-        { pk, name, email, isAdmin },
-        process.env.JWT_SECRET,
-        {
-          algorithm: "HS256",
-          subject: pk,
-          expiresIn: "1h",
-        }
-      );
-      return token;
     },
-    register(parent, { name, email, password, isAdmin }) {
-      const user = User.create({
-        name,
-        email,
-        password,
-        isAdmin,
-      });
-      console.log(user);
-      return user;
+    async register(parent, { name, email, password, isAdmin }) {
+      const existingUser = await getUserByEmail({ email });
+      if (existingUser && existingUser.isAdmin && !isAdmin) {
+        throw new AuthenticationError("User already exist");
+      }
+
+      const user = await getOrCreateUser({ name, email, password, isAdmin });
+      if (!user) {
+        throw new AuthenticationError("Couldn't create user");
+      }
+
+      const token = await generateToken({ user });
+      return { user, token };
     },
   },
 };
 
 const UserTypes = gql`
   type User {
-    id: ID!
     pk: String!
     name: String
     email: String!
@@ -64,13 +65,18 @@ const UserTypes = gql`
   }
 
   type Mutation {
-    login(email: String!, password: String!): String
+    login(email: String!, password: String!): AuthData
     register(
       name: String!
       email: String!
       password: String!
       isAdmin: Boolean!
-    ): User
+    ): AuthData
+  }
+
+  type AuthData {
+    user: User!
+    token: String!
   }
 `;
 
