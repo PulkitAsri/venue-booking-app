@@ -24,7 +24,6 @@ const OrgResolvers = {
 
 const OrgTypes = gql`
   type Org {
-    id: ID!
     pk: String!
     orgName: String
     email: String!
