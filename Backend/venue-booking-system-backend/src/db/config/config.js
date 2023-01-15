@@ -8,6 +8,10 @@ module.exports = {
     database: "venue_system",
     host: "127.0.0.1",
     dialect: "postgres",
+    define: {
+      //prevent sequelize from pluralizing table names
+      freezeTableName: true,
+    },
     use_env_variable: process.env.DEV_DATABASE_URL,
   },
   //dummy-roots for future
@@ -17,6 +21,10 @@ module.exports = {
     database: "database_test",
     host: "127.0.0.1",
     dialect: "postgres",
+    define: {
+      //prevent sequelize from pluralizing table names
+      freezeTableName: true,
+    },
     use_env_variable: process.env.TEST_DATABASE_URL,
   },
   production: {
@@ -25,6 +33,10 @@ module.exports = {
     database: "database_production",
     host: "127.0.0.1",
     dialect: "postgres",
+    define: {
+      //prevent sequelize from pluralizing table names
+      freezeTableName: true,
+    },
     use_env_variable: process.env.DATABASE_URL,
   },
 };

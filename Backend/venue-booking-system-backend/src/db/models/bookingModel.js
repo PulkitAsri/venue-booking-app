@@ -1,5 +1,8 @@
 "use strict";
 const { Model } = require("sequelize");
+const _ = require("lodash");
+const { approvedStatuses } = require("../../modules/booking/bookingConstants");
+
 module.exports = (sequelize, DataTypes) => {
   const Booking = sequelize.define("Booking", {
     pk: {
@@ -39,9 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     approvedStatus: {
-      type: DataTypes.DataTypes.ENUM(
-        _.concat(_.values(approvedStatuses)).join(",")
-      ),
+      type: DataTypes.ENUM(_.concat(_.values(approvedStatuses)).join(",")),
     },
     createdAt: {
       allowNull: false,

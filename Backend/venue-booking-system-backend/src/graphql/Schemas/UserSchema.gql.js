@@ -5,6 +5,7 @@ const { users } = require("../data");
 const { gql } = require("apollo-server-express");
 const jwt = require("jsonwebtoken");
 const { and, or } = require("graphql-shield");
+const { User } = require("../../db/models");
 require("dotenv").config();
 
 const UserResolvers = {
@@ -23,10 +24,6 @@ const UserResolvers = {
       if (!currentUser) {
         throw new Error("No User Found");
       }
-      // const isEqual = bcrypt.compare(password, currentUser.password);
-      // if (!isEqual) {
-      //   throw new Error("Wrong Password");
-      // }
       const { pk, isAdmin, name } = currentUser;
       const token = jwt.sign(
         { pk, name, email, isAdmin },
@@ -39,15 +36,15 @@ const UserResolvers = {
       );
       return token;
     },
-    createUser(parent, { email, password }) {
-      const existingUser = _.find(users, (user) => user.email === email);
-      if (existingUser) {
-        throw new Error("User exists already.");
-      }
-      const hashedPassword = bcrypt.hash(password, 12);
-
-      //create User
-      return "";
+    register(parent, { name, email, password, isAdmin }) {
+      const user = User.create({
+        name,
+        email,
+        password,
+        isAdmin,
+      });
+      console.log(user);
+      return user;
     },
   },
 };
@@ -68,7 +65,12 @@ const UserTypes = gql`
 
   type Mutation {
     login(email: String!, password: String!): String
-    createUser(email: String!, password: String!): String
+    register(
+      name: String!
+      email: String!
+      password: String!
+      isAdmin: Boolean!
+    ): User
   }
 `;
 
