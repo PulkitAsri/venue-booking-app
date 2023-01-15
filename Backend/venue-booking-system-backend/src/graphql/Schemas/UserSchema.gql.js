@@ -24,6 +24,9 @@ const UserResolvers = {
         throw new Error("No User Found");
       }
       // const isEqual = bcrypt.compare(password, currentUser.password);
+      // if (!isEqual) {
+      //   throw new Error("Wrong Password");
+      // }
       const { pk, isAdmin, name } = currentUser;
       const token = jwt.sign(
         { pk, name, email, isAdmin },
@@ -51,15 +54,16 @@ const UserResolvers = {
 
 const UserTypes = gql`
   type User {
-    pk: ID!
+    id: ID!
+    pk: String!
     name: String
-    email: String
-    isAdmin: Boolean
+    email: String!
+    isAdmin: Boolean!
   }
 
   type Query {
     me: User!
-    user(pk: ID!): User
+    user(pk: String!): User
   }
 
   type Mutation {
