@@ -1,6 +1,10 @@
 const _ = require("lodash");
 const { applyMiddleware } = require("graphql-middleware");
-const { UserTypes, UserResolvers, UserPermissions } = require("./UserSchema");
+const {
+  UserTypes,
+  UserResolvers,
+  UserPermissions,
+} = require("./UserSchema.gql.js");
 const { shield } = require("graphql-shield");
 const { makeExecutableSchema } = require("@graphql-tools/schema");
 
