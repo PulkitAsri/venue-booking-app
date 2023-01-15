@@ -3,10 +3,10 @@
 const { approvedStatuses } = require("../../modules/booking/bookingConstants");
 const _ = require("lodash");
 
-/** @type {import('sequelize-cli').Migration} */
+const tableName = "Booking";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Booking", {
+    await queryInterface.createTable(tableName, {
       pk: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -59,6 +59,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Booking");
+    await queryInterface.dropTable(tableName);
   },
 };
