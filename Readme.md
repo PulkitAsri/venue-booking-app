@@ -39,7 +39,7 @@ This is an example of how to list things you need to use the software and how to
   - Steps:
     - make user
       ```sh
-      create user pulkit with password 'pulkit';
+      create user pulkit with password 'pulkit'
       ```
     - then, grant all privileges to that user
       ```sh
