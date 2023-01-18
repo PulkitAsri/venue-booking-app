@@ -45,28 +45,28 @@ class MeetingsDataSource extends CalendarDataSource {
   }
 }
 
-void createTimeSlots() {
-  DateTime now = DateTime.now();
-  DateTime startTime = DateTime(now.year, now.month, now.day, 11, 0, 0);
-  DateTime endTime = DateTime(now.year, now.month, now.day, 17, 0, 0);
-  Duration step = Duration(hours: 1);
+// void createTimeSlots() {
+//   DateTime now = DateTime.now();
+//   DateTime startTime = DateTime(now.year, now.month, now.day, 11, 0, 0);
+//   DateTime endTime = DateTime(now.year, now.month, now.day, 17, 0, 0);
+//   Duration step = Duration(hours: 1);
 
-  List<BidSlot> timeSlots = [];
+//   List<BidSlot> timeSlots = [];
 
-  while (startTime.isBefore(endTime)) {
-    DateTime timeIncrement = startTime.add(step);
-    timeSlots.add(BidSlot(
-        startTime: DateFormat.jm().foramt(timeIncrement),
-        endTime: DateFormat.Hm().format(timeIncrement.add(
-          Duration(minutes: 1),
-        ))));
-    startTime = timeIncrement;
-  }
-  print('timeslots ------------- timeSlots');
-  timeSlots.forEach((e) => print('${e.startTime} == ${e.endTime}'));
-}
+//   while (startTime.isBefore(endTime)) {
+//     DateTime timeIncrement = startTime.add(step);
+//     timeSlots.add(BidSlot(
+//         startTime: DateFormat.jm().foramt(timeIncrement),
+//         endTime: DateFormat.Hm().format(timeIncrement.add(
+//           Duration(minutes: 1),
+//         ))));
+//     startTime = timeIncrement;
+//   }
+//   print('timeslots ------------- timeSlots');
+//   timeSlots.forEach((e) => print('${e.startTime} == ${e.endTime}'));
+// }
 
-class BidSlot {
-  late DateTime startTime;
-  late DateTime endTime;
-}
+// class BidSlot {
+//   late DateTime startTime;
+//   late DateTime endTime;
+// }
