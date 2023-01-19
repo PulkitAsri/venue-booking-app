@@ -112,10 +112,12 @@ const OrgTypes = gql`
 
 const OrgPermissions = {
   Query: {
-    org: and(isAuthenticated, isAdmin),
+    org: and(isAuthenticated, isAdmin), //my Org
+    allOrgs: isAuthenticated,
   },
   Mutation: {
     createOrg: and(isAuthenticated, isAdmin),
+    updateOrg: and(isAuthenticated, isAdmin),
   },
 };
 
