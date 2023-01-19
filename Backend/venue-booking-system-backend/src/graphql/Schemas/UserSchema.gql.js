@@ -1,11 +1,9 @@
 const _ = require("lodash");
 const bcrypt = require("bcryptjs");
 const { isAdmin, isAuthenticated } = require("../permissions");
-const { users } = require("../data");
 const { gql, AuthenticationError } = require("apollo-server-express");
 const jwt = require("jsonwebtoken");
 const { and, or } = require("graphql-shield");
-const { User } = require("../../db/models");
 const {
   getUserByEmail,
   getOrCreateUser,

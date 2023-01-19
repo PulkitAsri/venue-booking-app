@@ -51,9 +51,11 @@ module.exports = (sequelize, DataTypes) => {
 
   //ASSOCIATIONS
   User.associate = function (models) {
-    // User.belongsTo()
-    User.hasOne(models.Org);
-    User.hasMany(models.Booking);
+    User.hasOne(models.Org, { foreignKey: "ownerPk", as: "belongsToUser" });
+    User.hasMany(models.Booking, {
+      foreignKey: "bookedBy",
+      as: "bookingBelongsToUser",
+    });
   };
   return User;
 };

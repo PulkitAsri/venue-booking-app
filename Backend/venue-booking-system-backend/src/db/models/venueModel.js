@@ -47,9 +47,11 @@ module.exports = (sequelize, DataTypes) => {
 
   //ASSOCIATIONS
   Venue.associate = function (models) {
-    // Venue.hasOne(models.User, { foreignKey: "userId", as: "posts" });
-    Venue.belongsTo(models.User, { foreignKey: "orgPk", as: "belongsToOrg" });
-    Venue.hasMany(models.Booking);
+    Venue.belongsTo(models.Org, { foreignKey: "orgPk", as: "belongsToOrg" });
+    Venue.hasMany(models.Booking, {
+      foreignKey: "venuePk",
+      as: "belongsToVenue",
+    });
   };
   return Venue;
 };

@@ -5,13 +5,18 @@ const {
   UserResolvers,
   UserPermissions,
 } = require("./UserSchema.gql.js");
+const {
+  OrgTypes,
+  OrgResolvers,
+  OrgPermissions,
+} = require("./OrgSchema.gql.js");
 const { shield } = require("graphql-shield");
 const { makeExecutableSchema } = require("@graphql-tools/schema");
 
-const typeDefs = [UserTypes];
-const resolvers = _.merge(UserResolvers);
+const typeDefs = [UserTypes, OrgTypes];
+const resolvers = _.merge(UserResolvers, OrgResolvers);
 
-const allPermissions = [UserPermissions];
+const allPermissions = [UserPermissions, OrgPermissions];
 
 const queryPermissions = _.assign(
   ..._.map(allPermissions, ({ Query }) => Query)

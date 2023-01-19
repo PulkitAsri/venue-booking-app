@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
   //ASSOCIATIONS
   Org.associate = function (models) {
     Org.belongsTo(models.User, { foreignKey: "ownerPk", as: "belongsToUser" });
-    Org.hasMany(models.Venue);
+    Org.hasMany(models.Venue, { foreignKey: "orgPk", as: "belongsToOrg" });
   };
   return Org;
 };
