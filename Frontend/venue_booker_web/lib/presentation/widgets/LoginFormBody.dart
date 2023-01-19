@@ -1,20 +1,35 @@
+import 'dart:convert';
+import 'dart:js_util';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:untitled/data/models/Login.dart';
+import 'package:gql/language.dart';
+// import 'package:untitled/data/utility/queries.dart';
 
-import 'constants.dart';
+import '../../core/constants.dart';
 
 class Body extends StatelessWidget {
+  
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  // final queries = VenueBookerQueries();
 
-  final String mutationQuery = r"""
-      mutation Mutation($email: String!, $password: String!) {
+  final mutationQuery = parseString(r'''
+    mutation Login($email: String!, $password: String!) {
         login(email: $email, password: $password) {
+          user {
+            name
+            pk
+            email
+            isAdmin
+          }
           token
         }
       }
-      """;
+    '''
+  );
 
   Body({Key? key}) : super(key: key);
 
@@ -22,8 +37,22 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Mutation(
       options: MutationOptions(
-        document: gql(mutationQuery),
-        onCompleted: (data) => print("OnComplete called \n ${data.toString()}"),
+        document: mutationQuery,
+        onCompleted: (resultData) {
+          if (resultData == null) {
+            print("Error: No result data obtained.");
+          } else {
+            //resultData is already in JSON format, decoding to model class Data
+            print("login data: ${resultData.toString()}");
+            try {
+              final loginData = dataFromJson(resultData);
+              var loginToken = loginData.login!.token;
+              print("Login Tokan : $loginToken");
+            } catch (error) {
+              print("error parsing login data : $error");
+            }
+          }
+        },
         onError: (error) => print("onError Error: $error"),
       ),
       builder: (runMutation, QueryResult? result) {
@@ -179,8 +208,8 @@ class Body extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: Center(child: Text("Sign In"))),
-            onPressed: () {
-              runMutation(<String, dynamic>{
+            onPressed: () async {
+              await runMutation(<String, dynamic>{
                 "email": usernameController.text,
                 "password": passwordController.text,
               });
