@@ -2,15 +2,14 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:untitled/login_page.dart';
+import 'package:untitled/presentation/views/login_page.dart';
 import 'dart:async';
-import 'LoginFormBody.dart';
+import '../../presentation/widgets/LoginFormBody.dart';
 
-class LoginFunctionality extends StatelessWidget {
+class Home extends StatelessWidget {
   // const LoginFunctionality(email, password);
   @override
   Widget build(BuildContext context) {
-    
     final HttpLink httpLink = HttpLink("http://localhost:4000/graphql");
 
     final ValueNotifier<GraphQLClient> client = ValueNotifier(

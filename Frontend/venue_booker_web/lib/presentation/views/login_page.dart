@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'LoginFormBody.dart';
-import 'constants.dart';
+import '../widgets/LoginFormBody.dart';
+import '../../core/constants.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
