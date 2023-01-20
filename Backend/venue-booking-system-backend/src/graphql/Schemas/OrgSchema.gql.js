@@ -28,7 +28,7 @@ const OrgResolvers = {
         },
       });
       console.log(existingOrg);
-      if (existingOrg) {
+      if (!_.isEmpty(existingOrg)) {
         throw new Error(
           "Org exists already with either the same orgName or same User ownerPk"
         );
