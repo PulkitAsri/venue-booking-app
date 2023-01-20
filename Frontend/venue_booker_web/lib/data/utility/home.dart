@@ -2,6 +2,8 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:untitled/data/utility/queries.dart';
+import 'package:untitled/presentation/query_documents_provider.dart';
 import 'package:untitled/presentation/views/login_page.dart';
 import 'dart:async';
 import '../../presentation/widgets/LoginFormBody.dart';
@@ -18,12 +20,20 @@ class Home extends StatelessWidget {
         cache: GraphQLCache(),
       ),
     );
-    return GraphQLProvider(
-      child: const LoginPage(),
-      client: client,
+
+    final queries = VenueBookerQueries();
+
+    return QueriesDocumentProvider(
+      queries: queries,
+      child: GraphQLProvider(
+        child: const LoginPage(),
+        client: client,
+      ),
     );
   }
+  
 }
+
 
 // class Test extends StatelessWidget {
 //   // Test(var email, var password);
