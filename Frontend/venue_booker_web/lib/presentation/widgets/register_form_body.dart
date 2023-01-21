@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:html';
 import 'dart:js_util';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:untitled/data/models/Login.dart';
+import 'package:untitled/data/models/Register.dart';
 import 'package:gql/language.dart';
 import 'package:untitled/data/utility/queries.dart';
 import 'package:untitled/presentation/query_documents_provider.dart';
@@ -13,29 +14,30 @@ import '../../core/constants.dart';
 
 final queries = VenueBookerQueries();
 
-class LoginBody extends StatelessWidget {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class RegisterationBody extends StatelessWidget {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController registerPasswordController = TextEditingController();
 
-  LoginBody({Key? key}) : super(key: key);
+  RegisterationBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Mutation(
       options: MutationOptions(
-        document: parseString(context.queries.login()),
+        document: parseString(context.queries.register()),
         onCompleted: (resultData) {
           if (resultData == null) {
             print("Error: No result data obtained.");
           } else {
             //resultData is already in JSON format, decoding to model class Data
-            print("login data: ${resultData.toString()}");
+            print("registeration data: ${resultData.toString()}");
             try {
-              final loginData = dataFromJson(resultData);
-              var loginToken = loginData.login!.token;
-              print("Login Tokan : $loginToken");
+              final registerationData = registerDataFromJson(resultData);
+              var registerToken = registerationData.register!.token;
+              print("registeration Tokan : $registerToken");
             } catch (error) {
-              print("error parsing login data : $error");
+              print("error parsing registeration data : $error");
             }
           }
         },
@@ -51,7 +53,7 @@ class LoginBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Sign In to VenBooker!',
+                    'Register to VenBooker!',
                     style: TextStyle(
                       fontSize: 45,
                       fontWeight: FontWeight.bold,
@@ -70,7 +72,7 @@ class LoginBody extends StatelessWidget {
                   Row(
                     children: [
                       const Text(
-                        "If you don't have an account",
+                        "If you already have an account",
                         style: TextStyle(
                             color: Colors.black54, fontWeight: FontWeight.bold),
                       ),
@@ -86,10 +88,9 @@ class LoginBody extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           // print(MediaQuery.of(context).size.width);
-                          Navigator.of(context).pushNamed(registerPage);
                         },
                         child: const Text(
-                          "Register here!",
+                          "Sign In here!",
                           style: TextStyle(
                               color: Colors.deepPurple,
                               fontWeight: FontWeight.bold),
@@ -119,7 +120,7 @@ class LoginBody extends StatelessWidget {
                   vertical: MediaQuery.of(context).size.height / 6),
               child: Container(
                 width: 320,
-                child: _formLogin(runMutation, context),
+                child: _formRegisteration(runMutation, context),
               ),
             )
           ],
@@ -128,12 +129,31 @@ class LoginBody extends StatelessWidget {
     );
   }
 
-  Widget _formLogin(RunMutation runMutation, BuildContext context) {
+  Widget _formRegisteration(RunMutation runMutation, BuildContext context) {
     TextEditingController usernameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
     return Column(
       children: [
+        TextField(
+          decoration: InputDecoration(
+            hintText: 'Name',
+            filled: true,
+            fillColor: Colors.blueGrey[50],
+            labelStyle: TextStyle(fontSize: 12),
+            contentPadding: EdgeInsets.only(left: 30),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blueGrey.shade50),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blueGrey.shade50),
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          controller: nameController,
+        ),
+        SizedBox(height: 30),
         TextField(
           decoration: InputDecoration(
             hintText: 'Email address',
@@ -150,7 +170,7 @@ class LoginBody extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          controller: usernameController,
+          controller: emailController,
         ),
         SizedBox(height: 30),
         TextField(
@@ -175,7 +195,7 @@ class LoginBody extends StatelessWidget {
             ),
           ),
           obscureText: true,
-          controller: passwordController,
+          controller: registerPasswordController,
         ),
         const SizedBox(height: 40),
         Container(
@@ -197,8 +217,10 @@ class LoginBody extends StatelessWidget {
                 child: Center(child: Text("Sign In"))),
             onPressed: () async {
               await runMutation(<String, dynamic>{
-                "email": usernameController.text,
-                "password": passwordController.text,
+                "name": nameController.text,
+                "email": emailController.text,
+                "password": registerPasswordController.text,
+                "isAdmin": true,
               });
 
               Navigator.of(context).pushNamed(calendar);
@@ -235,14 +257,15 @@ class LoginBody extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _loginWithButton(image: 'images/google.png'),
+            _registerationWithButton(image: 'images/google.png'),
           ],
         ),
       ],
     );
   }
 
-  Widget _loginWithButton({required String image, bool isActive = false}) {
+  Widget _registerationWithButton(
+      {required String image, bool isActive = false}) {
     return Container(
       width: 90,
       height: 70,

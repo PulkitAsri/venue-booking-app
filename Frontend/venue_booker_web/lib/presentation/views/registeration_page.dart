@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import '../widgets/LoginFormBody.dart';
 import '../../core/constants.dart';
+import '../widgets/register_form_body.dart';
+import 'package:untitled/data/utility/queries.dart';
+import 'package:untitled/presentation/query_documents_provider.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+final queries = VenueBookerQueries();
+
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,7 @@ class LoginPage extends StatelessWidget {
           MediaQuery.of(context).size.width >= 980
               ? const Menu()
               : const SizedBox(), // Responsive
-          LoginBody(),
+          RegisterationBody(),
         ],
       ),
     );
@@ -47,8 +51,8 @@ class Menu extends StatelessWidget {
           ),
           Row(
             children: [
-              _menuItem(title: 'Sign In', isActive: true),
-              _registerButton()
+              _menuItem(title: 'Register', isActive: true),
+              _signInButton()
             ],
           ),
         ],
@@ -89,7 +93,7 @@ class Menu extends StatelessWidget {
     );
   }
 
-  Widget _registerButton() {
+  Widget _signInButton() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
       decoration: BoxDecoration(
@@ -104,7 +108,7 @@ class Menu extends StatelessWidget {
         ],
       ),
       child: const Text(
-        'Register',
+        'Sign In',
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black54,

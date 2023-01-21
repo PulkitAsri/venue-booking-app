@@ -56,4 +56,84 @@ class VenueBookerQueries {
     }
     ''';
   }
+
+  String fetchOrgData() {
+    return r'''
+    query Query {
+      org {
+        pk
+        orgName
+        email
+        website
+        address
+        ownerPk {
+          pk
+          name
+          email
+          isAdmin
+        }
+      }
+    }   
+    ''';
+  }
+
+  String fetchAllOrgs() {
+    return r'''
+    query Query {
+      allOrgs {
+        pk
+        orgName
+        email
+        website
+        address
+        ownerPk {
+          pk
+          name
+          email
+          isAdmin
+        }
+      }
+    }
+    ''';
+  }
+
+  String createOrg() {
+    return r'''
+    mutation Mutation($orgName: String!, $email: String!, $website: String, $address: String, $ownerPk: String) {
+      createOrg(orgName: $orgName, email: $email, website: $website, address: $address, ownerPk: $ownerPk) {
+        pk
+        orgName
+        email
+        website
+        address
+        ownerPk {
+          pk
+          name
+          email
+          isAdmin
+        }
+      }
+    }
+    ''';
+  }
+
+  String updateOrg() {
+    return r'''
+    mutation UpdateOrg($orgPk: String!, $orgName: String, $email: String, $website: String, $address: String) {
+      updateOrg(orgPk: $orgPk, orgName: $orgName, email: $email, website: $website, address: $address) {
+        pk
+        orgName
+        email
+        website
+        address
+        ownerPk {
+          pk
+          name
+          email
+          isAdmin
+        }
+      }
+    }
+    ''';
+  }
 }
