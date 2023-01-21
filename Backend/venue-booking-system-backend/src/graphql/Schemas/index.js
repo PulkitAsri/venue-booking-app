@@ -18,6 +18,11 @@ const {
   VenueResolvers,
   VenuePermissions,
 } = require("./VenueSchema.gql.js");
+const {
+  BookingTypes,
+  BookingResolvers,
+  BookingPermissions,
+} = require("./BookingSchema.gql.js");
 
 const { shield } = require("graphql-shield");
 const { makeExecutableSchema } = require("@graphql-tools/schema");
@@ -27,17 +32,29 @@ const { gql } = require("apollo-server-express");
 // const customDateTimeResolver = { DateTime: DateTimeScalarType };
 // const DateTime = "scalar DateTime";
 // console.log(scalarResolvers);
-const typeDefs = [UserTypes, OrgTypes, VenueTypes, ...scalarTypeDefs];
+const typeDefs = [
+  UserTypes,
+  OrgTypes,
+  VenueTypes,
+  BookingTypes,
+  ...scalarTypeDefs,
+];
 const resolvers = _.merge(
   UserResolvers,
   OrgResolvers,
   VenueResolvers,
+  BookingResolvers,
   // customDateTimeResolver
   // DateTimeResolver
   scalarResolvers
 );
 
-const allPermissions = [UserPermissions, OrgPermissions, VenuePermissions];
+const allPermissions = [
+  UserPermissions,
+  OrgPermissions,
+  VenuePermissions,
+  BookingPermissions,
+];
 
 const queryPermissions = _.assign(
   ..._.map(allPermissions, ({ Query }) => Query)
