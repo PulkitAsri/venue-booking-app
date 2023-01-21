@@ -117,6 +117,7 @@ const VenuePermissions = {
     // org: and(isAuthenticated, isAdmin), //my Venue
     allVenues: isAuthenticated,
     allVenuesForOrg: isAuthenticated,
+    venueForPk: isAuthenticated,
   },
   Mutation: {
     createVenue: and(isAuthenticated, isAdmin),

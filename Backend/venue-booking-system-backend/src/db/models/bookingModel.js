@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     bookedBy: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.UUID,
       references: {
         model: {
           tableName: "User",
@@ -42,7 +42,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     approvedStatus: {
-      type: DataTypes.ENUM(_.concat(_.values(approvedStatuses)).join(",")),
+      type: DataTypes.ENUM,
+      values: _.values(approvedStatuses),
     },
     createdAt: {
       allowNull: false,
