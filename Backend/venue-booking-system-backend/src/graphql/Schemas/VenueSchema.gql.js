@@ -24,6 +24,7 @@ const VenueResolvers = {
   },
   Mutation: {
     async createVenue(parent, args) {
+      console.log(args);
       const existingVenue = await Venue.findAll({
         where: {
           [Op.and]: [{ venueName: args.venueName }, { orgPk: args.orgPk }],
@@ -45,7 +46,22 @@ const VenueResolvers = {
           "You cant update the userAdmin without permission. Feature Coming Soon!"
         );
       }
-      const updateDict = _.pickBy(args, (val) => !_.isUndefined(val));
+      console.log(args);
+
+      const updateDict = _.pickBy(
+        args,
+        (val) => !_.isUndefined(val) && !_.isNull(val)
+      );
+
+      if (updateDict.openingTime)
+        updateDict.openingTime = moment(args.openingTime)
+          .utc()
+          .format("HH:mm:ss");
+      if (updateDict.closingTime)
+        updateDict.closingTime = moment(args.closingTime)
+          .utc()
+          .format("HH:mm:ss");
+
       // console.log(updateDict);
       await Venue.update(updateDict, {
         where: { pk: args.venuePk },
