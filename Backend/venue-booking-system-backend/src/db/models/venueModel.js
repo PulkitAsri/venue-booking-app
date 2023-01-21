@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     openingTime: {
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
     },
     closingTime: {
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
     },
     address: {
       type: DataTypes.STRING,

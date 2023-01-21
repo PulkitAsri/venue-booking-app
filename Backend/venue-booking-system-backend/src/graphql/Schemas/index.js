@@ -1,3 +1,6 @@
+const { typeDefs: scalarTypeDefs } = require("graphql-scalars");
+const { resolvers: scalarResolvers } = require("graphql-scalars");
+
 const _ = require("lodash");
 const { applyMiddleware } = require("graphql-middleware");
 const {
@@ -10,13 +13,31 @@ const {
   OrgResolvers,
   OrgPermissions,
 } = require("./OrgSchema.gql.js");
+const {
+  VenueTypes,
+  VenueResolvers,
+  VenuePermissions,
+} = require("./VenueSchema.gql.js");
+
 const { shield } = require("graphql-shield");
 const { makeExecutableSchema } = require("@graphql-tools/schema");
+// const { DateTimeScalarType } = require("../Scalers/DateTime.gql.js");
+const { gql } = require("apollo-server-express");
 
-const typeDefs = [UserTypes, OrgTypes];
-const resolvers = _.merge(UserResolvers, OrgResolvers);
+// const customDateTimeResolver = { DateTime: DateTimeScalarType };
+// const DateTime = "scalar DateTime";
+// console.log(scalarResolvers);
+const typeDefs = [UserTypes, OrgTypes, VenueTypes, ...scalarTypeDefs];
+const resolvers = _.merge(
+  UserResolvers,
+  OrgResolvers,
+  VenueResolvers,
+  // customDateTimeResolver
+  // DateTimeResolver
+  scalarResolvers
+);
 
-const allPermissions = [UserPermissions, OrgPermissions];
+const allPermissions = [UserPermissions, OrgPermissions, VenuePermissions];
 
 const queryPermissions = _.assign(
   ..._.map(allPermissions, ({ Query }) => Query)
@@ -39,6 +60,12 @@ const permissions = shield(
   }
 );
 
+// const schema = makeExecutableSchema({
+//   typeDefs: [...DateTimeTypeDefinition],
+//   resolvers: {
+//     ...DateTimeResolver,
+//   },
+// });
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 const protectedSchema = applyMiddleware(schema, permissions);

@@ -30,7 +30,7 @@ const generateToken = async ({ user }) => {
   const { pk, name, email, isAdmin } = user;
   const token = jwt.sign({ pk, name, email, isAdmin }, process.env.JWT_SECRET, {
     algorithm: "HS256",
-    expiresIn: "1h",
+    expiresIn: "7d",
   });
   return token;
 };
