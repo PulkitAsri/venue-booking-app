@@ -4,7 +4,7 @@ const { orgs } = require("../data");
 const { gql } = require("apollo-server-express");
 const { and, or } = require("graphql-shield");
 const { Org } = require("../../db/models");
-const { getUserByPk } = require("../../modules/user/userModule");
+const { getByPk } = require("../../modules/user/userModule");
 const { Op } = require("sequelize");
 
 const OrgResolvers = {
@@ -71,7 +71,7 @@ const OrgResolvers = {
 
   Org: {
     ownerPk(org, args, ctx) {
-      return getUserByPk({ pk: org.ownerPk });
+      return getByPk({ pk: org.ownerPk });
     },
   },
 };

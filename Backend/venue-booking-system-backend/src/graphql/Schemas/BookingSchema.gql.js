@@ -5,87 +5,51 @@ const { orgs } = require("../data");
 const { gql } = require("apollo-server-express");
 const { and, or } = require("graphql-shield");
 const { Booking, Venue, User } = require("../../db/models");
+const bookingModule = require("../../modules/booking/bookingModule");
 const venueModule = require("../../modules/venue/venueModule");
+const userModule = require("../../modules/user/userModule");
 const { Op } = require("sequelize");
 const { approvedStatuses } = require("../../modules/booking/bookingConstants");
 
 const BookingResolvers = {
   Query: {
-    async getApprovedBookingsToday(parent, { today }, ctx) {
-      const startOfDay = moment(today).startOf("day");
-      const endOfDay = moment(today).endOf("day");
-      console.log(startOfDay, endOfDay);
-      const bookings = await Booking.findAll({
-        where: {
-          //Date == Today and approvedStatus= APPROVED
-          timeSlotStart: {
-            [Op.lt]: endOfDay.format(),
-            [Op.gt]: startOfDay.format(),
-          },
-          approvedStatus: approvedStatuses.APPROVED,
-        },
-      });
-
-      // console.log(bookings);
+    async getApprovedBookingsOnDate(parent, { date }, ctx) {
+      const bookings = await bookingModule.getTakenSlotsOnDate({ date });
       return bookings;
     },
     async allBookingsForOrg(parent, { orgPk }, ctx) {
-      const bookings = await Booking.findAll({
-        include: [
-          {
-            model: Venue,
-            required: true,
-            where: { orgPk },
-            as: "belongsToVenue",
-          },
-        ],
-      });
+      const bookings = await bookingModule.getAllForOrg({ orgPk });
       return bookings;
     },
   },
   Mutation: {
     async createBooking(parent, args) {
-      const {
-        timeSlotStart,
-        timeSlotEnd,
-        venuePk,
-        bookedBy,
-        bookedAt,
-        description,
-      } = args;
-      // const exisitingBooking = await Booking.findAll({
-      //   where: { timeSlotStart, timeSlotEnd, venuePk, bookedBy },
-      // });
-      // if (!_.isEmpty(exisitingBooking)) {
-      //   throw new Error("Booking exists already with the same Params");
-      // }
-      console.log({
-        ...args,
-        approvedStatus: approvedStatuses.PENDING,
-      });
-      const booking = await Booking.create({
-        ...args,
-        approvedStatus: approvedStatuses.PENDING,
-      });
-      console.log(booking);
+      const booking = await bookingModule.create(args);
       return booking;
     },
     async changeBookingStatus(parent, { bookingPk, approvedStatus }) {
-      await Booking.update({ approvedStatus }, { where: { pk: bookingPk } });
-      const updatedBooking = await Booking.findByPk(bookingPk);
-      if (!updatedBooking || updatedBooking.approvedStatus != approvedStatus) {
-        throw new Error("Sorry Couldn't update");
-      }
+      let updatedBooking;
+      // if (approvedStatus == approvedStatuses.APPROVED) {
+      //   updatedBooking = bookingModule.approveRequest({
+      //     bookingPk,
+      //     approvedStatus,
+      //   });
+      // } else {
+      updatedBooking = bookingModule.updateStatus({
+        bookingPk,
+        approvedStatus,
+      });
+      // }
       return updatedBooking;
     },
   },
 
   Booking: {
     venuePk(booking, args, ctx) {
-      return Venue.findByPk(booking.venuePk);
+      return venueModule.getByPk({ venuePk: booking.venuePk });
     },
     bookedBy(booking, args, ctx) {
-      return User.findByPk(booking.bookedBy);
+      return userModule.getByPk({ pk: booking.bookedBy });
     },
   },
 };
@@ -107,7 +71,7 @@ const BookingTypes = gql`
   } 
 
   type Query {
-    getApprovedBookingsToday(today: String): [Booking]
+    getApprovedBookingsOnDate(date: String): [Booking]
     allBookingsForOrg(orgPk: String!): [Booking]
   }
 
@@ -132,7 +96,7 @@ const BookingTypes = gql`
 const BookingPermissions = {
   Query: {
     allBookingsForOrg: and(isAuthenticated, isAdmin),
-    getApprovedBookingsToday: isAuthenticated,
+    getApprovedBookingsOnDate: isAuthenticated,
   },
   Mutation: {
     createBooking: isAuthenticated,
