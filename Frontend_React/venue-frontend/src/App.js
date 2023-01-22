@@ -11,8 +11,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/:orgPk/venues" element={<List />} />
         {/* <Route path="/venues" element={<List />} /> */}
-        <Route path="/venues/:id" element={<Hotel />} />
         <Route path="/loginPage" element={<LoginPage/>} />
+        <Route path="/:orgPk/venues/:venuePk" element={<Hotel />} />
       </Routes>
     </BrowserRouter>
   );

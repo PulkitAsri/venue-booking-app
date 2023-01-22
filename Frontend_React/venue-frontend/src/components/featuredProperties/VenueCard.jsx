@@ -1,4 +1,4 @@
-const VenueCard = ({ venue }) => {
+const VenueCard = ({ venue, orgPk }) => {
   return (
     <div className="fpItem">
       <img
@@ -11,7 +11,7 @@ const VenueCard = ({ venue }) => {
       <span className="fpPrice">{`${venue.openingTime} - ${venue.closingTime}`}</span>
       <div className="fpRating">
         <button>8.9</button>
-        <span>Excellent</span>
+        <span>orgPk</span>
       </div>
     </div>
   );
