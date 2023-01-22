@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
-import SearchItem from "../../components/searchItem/SearchItem";
+import VenueItem from "../../components/venueItem/VenueItem";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/client";
 
@@ -37,7 +37,7 @@ const List = () => {
         <div className="listWrapper">
           <div className="listResult">
             {data.allVenues.map((venue) => (
-              <SearchItem venue={venue} />
+              <VenueItem venue={venue} />
             ))}
           </div>
         </div>
