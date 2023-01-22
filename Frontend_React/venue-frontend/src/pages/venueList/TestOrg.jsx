@@ -10,44 +10,42 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/client";
 
 const ORG_DATA = gql`
-    query Query {
-        org {
+  query Query {
+    org {
+      pk
+      orgName
+      email
+      website
+      address
+      ownerPk {
         pk
-        orgName
+        name
         email
-        website
-        address
-        ownerPk {
-            pk
-            name
-            email
-            isAdmin
-        }
-        }
-    }   
-    `;
-
+        isAdmin
+      }
+    }
+  }
+`;
 
 const ALL_ORGS = gql`
-    query Query {
-        allOrgs {
+  query Query {
+    allOrgs {
+      pk
+      orgName
+      email
+      website
+      address
+      ownerPk {
         pk
-        orgName
+        name
         email
-        website
-        address
-        ownerPk {
-            pk
-            name
-            email
-            isAdmin
-        }
-        }
+        isAdmin
+      }
     }
-    `;
+  }
+`;
 
-
-const List = () => {
+const VenueList = () => {
   const location = useLocation();
   const { data, loading, error } = useQuery(ORG_DATA);
 
@@ -71,4 +69,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default VenueList;

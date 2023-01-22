@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./featured.css";
+import "./orgContainer.css";
 
 const OrgItem = ({ org }) => {
   const navigate = useNavigate();
