@@ -93,10 +93,10 @@ const BookingTypes = gql`
 const BookingPermissions = {
   Query: {
     allBookingsForOrg: and(isAuthenticated, isAdmin),
-    getApprovedBookingsOnDate: isAuthenticated,
+    // getApprovedBookingsOnDate: isAuthenticated,
   },
   Mutation: {
-    createBooking: isAuthenticated,
+    // createBooking: isAuthenticated,
     changeBookingStatus: and(isAuthenticated, isAdmin),
   },
 };

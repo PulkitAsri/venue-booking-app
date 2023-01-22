@@ -130,10 +130,9 @@ const VenueTypes = gql`
 
 const VenuePermissions = {
   Query: {
-    // org: and(isAuthenticated, isAdmin), //my Venue
-    allVenues: isAuthenticated,
-    allVenuesForOrg: isAuthenticated,
-    venueForPk: isAuthenticated,
+    // allVenues: isAuthenticated,
+    // allVenuesForOrg: isAuthenticated,
+    // venueForPk: isAuthenticated,
   },
   Mutation: {
     createVenue: and(isAuthenticated, isAdmin),

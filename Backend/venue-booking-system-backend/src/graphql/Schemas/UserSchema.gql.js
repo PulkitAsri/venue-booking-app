@@ -80,7 +80,7 @@ const UserTypes = gql`
 
 const UserPermissions = {
   Query: {
-    me: isAuthenticated,
+    // me: isAuthenticated,
     user: and(isAuthenticated, isAdmin),
   },
   Mutation: {},
