@@ -29,17 +29,14 @@ const BookingResolvers = {
     },
     async changeBookingStatus(parent, { bookingPk, approvedStatus }) {
       let updatedBooking;
-      // if (approvedStatus == approvedStatuses.APPROVED) {
-      //   updatedBooking = bookingModule.approveRequest({
-      //     bookingPk,
-      //     approvedStatus,
-      //   });
-      // } else {
-      updatedBooking = bookingModule.updateStatus({
-        bookingPk,
-        approvedStatus,
-      });
-      // }
+      if (approvedStatus == approvedStatuses.APPROVED) {
+        updatedBooking = bookingModule.approveRequest({ bookingPk });
+      } else {
+        updatedBooking = bookingModule.updateStatus({
+          bookingPk,
+          approvedStatus,
+        });
+      }
       return updatedBooking;
     },
   },
