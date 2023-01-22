@@ -7,7 +7,7 @@ const OrgItem = ({ org }) => {
     <div
       className="featuredItem"
       onClick={() => {
-        navigate("/" + org.pk, { state: { orgPk: org.pk } });
+        navigate("/" + org.pk + "/venues", { state: { orgPk: org.pk } });
       }}
     >
       {/* <img
