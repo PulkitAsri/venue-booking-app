@@ -136,8 +136,8 @@ const Hotel = () => {
             <span>{data.venueForPk.address}</span>
           </div>
           <span className="hotelDistance">{data.orgForPk.orgName}</span>
-          <span className="hotelPriceHighlight">{`OPEN at ${data.venueForPk.openingTime}`}</span>
-          <span className="hotelPriceHighlight">{`CLOSES at ${data.venueForPk.closingTime}`}</span>
+          <span className="hotelPriceHighlight">{`OPEN at ${data.venueForPk.openingTime.slice(0, -1)}`}</span>
+          <span className="hotelPriceHighlight">{`CLOSES at ${data.venueForPk.closingTime.slice(0, -1)}`}</span>
           <div className="hotelImages">
             {photos.map((photo, i) => (
               <div className="hotelImgWrapper" key={i}>
@@ -152,7 +152,7 @@ const Hotel = () => {
           </div>
           <div className="hotelDetails">
             <div className="hotelDetailsTexts">
-              <h1 className="hotelTitle">Stay in the heart of City</h1>
+              <h1 className="hotelTitle"> { data.venueForPk.venueName }</h1>
               <p className="hotelDesc">
                 {data.venueForPk.description || `<DESCRIPTION>`}
               </p>
@@ -187,7 +187,7 @@ const Hotel = () => {
           </div>
         </div>
         <MailList />
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </div>
   );

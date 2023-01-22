@@ -136,4 +136,36 @@ class VenueBookerQueries {
     }
     ''';
   }
+
+  String fetchAllVenues() {
+    return r'''
+    query Query {
+      allVenues {
+        pk
+        venueName
+        openingTime
+        closingTime
+        address
+        description
+        images
+      }
+    }
+    ''';
+  }
+
+  String fetchVenuesForOrg(String orgPk) {
+    return """
+    query Query($orgPk: String!) {
+      allVenuesForOrg(orgPk: $orgPk) {
+        venueName
+        pk
+        openingTime
+        closingTime
+        images
+        description
+        address
+      }
+    }
+    """;
+  }
 }

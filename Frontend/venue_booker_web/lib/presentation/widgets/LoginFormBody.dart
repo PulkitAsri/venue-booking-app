@@ -34,6 +34,10 @@ class LoginBody extends StatelessWidget {
               final loginData = dataFromJson(resultData);
               var loginToken = loginData.login!.token;
               print("Login Tokan : $loginToken");
+
+              //TODO: Authorization figure out karna hai.
+
+              Navigator.of(context).pushNamed(userHomePage);
             } catch (error) {
               print("error parsing login data : $error");
             }
