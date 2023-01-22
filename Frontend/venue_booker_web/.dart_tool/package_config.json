@@ -14,12 +14,6 @@
       "languageVersion": "2.18"
     },
     {
-      "name": "badges",
-      "rootUri": "file:///Users/shubham/.pub-cache/hosted/pub.dev/badges-2.0.3",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "boolean_selector",
       "rootUri": "file:///Users/shubham/.pub-cache/hosted/pub.dev/boolean_selector-2.1.1",
       "packageUri": "lib/",
@@ -78,12 +72,6 @@
       "rootUri": "file:///Users/shubham/.pub-cache/hosted/pub.dev/dbus-0.7.8",
       "packageUri": "lib/",
       "languageVersion": "2.15"
-    },
-    {
-      "name": "easy_sidemenu",
-      "rootUri": "file:///Users/shubham/.pub-cache/hosted/pub.dev/easy_sidemenu-0.4.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
     },
     {
       "name": "fake_async",
@@ -464,7 +452,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-01-22T19:55:49.242533Z",
+  "generated": "2023-01-22T20:43:25.455503Z",
   "generator": "pub",
   "generatorVersion": "3.0.0-136.0.dev"
 }
