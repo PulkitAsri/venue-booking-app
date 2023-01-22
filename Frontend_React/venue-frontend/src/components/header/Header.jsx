@@ -47,6 +47,10 @@ const Header = ({ type }) => {
     navigate("/venues", { state: { destination, date, options } });
   };
 
+  const navigateToLogin = () => {
+    navigate("/loginPage");
+  };
+
   return (
     <div className="header">
       <div
@@ -80,7 +84,8 @@ const Header = ({ type }) => {
           <>
             <h1 className="headerTitle">Book Venues with Ease.</h1>
             <p className="headerDesc">Something Somethings</p>
-            <button className="headerBtn">Sign in / Register</button>
+            <button className="headerBtn" onClick={navigateToLogin}>Sign in / Register</button>
+            
             <div className="headerSearch">
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />

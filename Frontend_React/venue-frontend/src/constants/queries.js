@@ -1,18 +1,9 @@
-import "./list.css";
-import Navbar from "../../components/navbar/Navbar";
-import Header from "../../components/header/Header";
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
-import { format } from "date-fns";
-import { DateRange } from "react-date-range";
-import SearchItem from "../../components/searchItem/SearchItem";
 import { gql } from "apollo-boost";
-import { useQuery } from "@apollo/client";
 
 
 
 
-const LOGIN = gql`
+export const LOGIN = gql`
     mutation Login($email: String!, $password: String!) {
         login(email: $email, password: $password) {
         user {
@@ -213,4 +204,3 @@ const APPROVED_BOOKING_ON_DATE = gql`
         }
     }
     `;
-
