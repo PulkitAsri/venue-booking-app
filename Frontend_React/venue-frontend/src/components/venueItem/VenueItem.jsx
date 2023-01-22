@@ -14,7 +14,7 @@ const VenueItem = ({ venue }) => {
         <h1 className="siTitle">{venue.venueName}</h1>
         <span className="siDistance">{venue.address}</span>
         <span className="siTaxiOp">
-          `${venue.openingTime} - ${venue.closingTime}`
+          {`${venue.openingTime} - ${venue.closingTime}`}
         </span>
         <span className="siSubtitle">
           Studio Apartment with Air conditioning
