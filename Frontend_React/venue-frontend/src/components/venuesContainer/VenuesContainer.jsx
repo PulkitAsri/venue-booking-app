@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import VenueItem from "../venueItem/VenueItem";
-import "./featuredProperties.css";
+import "./venueCard.css";
 import VenueCard from "./VenueCard";
 const QUERY = gql`
   query Query {
@@ -14,6 +14,8 @@ const QUERY = gql`
       images
       orgPk {
         pk
+        orgName
+        website
       }
     }
   }
@@ -25,7 +27,7 @@ const FeaturedProperties = () => {
   return (
     <div className="fp">
       {data.allVenues.map((venue) => (
-        <VenueCard venue={venue} orgPk={venue.orgPk.pk} />
+        <VenueCard venue={venue} org={venue.orgPk} />
       ))}
       {/* <div className="fpItem">
         <img
@@ -47,7 +49,7 @@ const FeaturedProperties = () => {
           alt=""
           className="fpImg"
         />
-        <span className="fpName">Four Seasons Hotel</span>
+        <span className="fpName">Four Seasons VenuePage</span>
         <span className="fpCity">Lisbon</span>
         <span className="fpPrice">Starting from $99</span>
         <div className="fpRating">

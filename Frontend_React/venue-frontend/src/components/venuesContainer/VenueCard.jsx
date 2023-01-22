@@ -1,4 +1,4 @@
-const VenueCard = ({ venue }) => {
+const VenueCard = ({ venue, org }) => {
   const openingTime = venue.openingTime.slice(0, -1);
   const closingTime = venue.closingTime.slice(0, -1);
   return (
@@ -12,7 +12,9 @@ const VenueCard = ({ venue }) => {
       <span className="fpCity">{venue.address}</span>
       <span className="fpPrice">{`${openingTime} - ${closingTime}`}</span>
       <div className="fpRating">
-        <button>8.9</button>
+        {/* <span>{org.orgName}</span> */}
+        <button>{org.orgName}</button>
+        {/* <span>@{org.website}</span> */}
       </div>
     </div>
   );
