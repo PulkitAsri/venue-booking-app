@@ -4,7 +4,7 @@ const VenueCard = ({ venue }) => {
   return (
     <div className="fpItem">
       <img
-        src="https://cf.bstatic.com/xdata/images/hotel/square600/13125860.webp?k=e148feeb802ac3d28d1391dad9e4cf1e12d9231f897d0b53ca067bde8a9d3355&o=&s=1"
+        src="https://media.istockphoto.com/id/1295114854/photo/empty-red-armchairs-of-a-theater-ready-for-a-show.jpg?b=1&s=170667a&w=0&k=20&c=W__8iZMDp4XtPAMPRuTPPYzszc1A4fdajYGn0ox9kG4="
         alt=""
         className="fpImg"
       />
@@ -13,7 +13,6 @@ const VenueCard = ({ venue }) => {
       <span className="fpPrice">{`${openingTime} - ${closingTime}`}</span>
       <div className="fpRating">
         <button>8.9</button>
-        <span>orgPk</span>
       </div>
     </div>
   );
