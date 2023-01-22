@@ -4,12 +4,7 @@ const { isAdmin, isAuthenticated } = require("../permissions");
 const { gql, AuthenticationError } = require("apollo-server-express");
 const jwt = require("jsonwebtoken");
 const { and, or } = require("graphql-shield");
-const {
-  getUserByEmail,
-  getOrCreateUser,
-  generateToken,
-  getUserByPk,
-} = require("../../modules/user/userModule");
+const userModule = require("../../modules/user/userModule");
 require("dotenv").config();
 
 const UserResolvers = {
@@ -18,32 +13,37 @@ const UserResolvers = {
       return user;
     },
     user(parent, { pk }) {
-      return getUserByPk({ pk });
+      return userModule.getByPk({ pk });
     },
   },
   Mutation: {
     async login(parent, { email, password }) {
-      const user = await getUserByEmail({ email });
+      const user = await userModule.getByEmail({ email });
 
       if (user && bcrypt.compareSync(password, user.password)) {
-        const token = await generateToken({ user });
+        const token = await userModule.generateToken({ user });
         return { user, token };
       } else {
         throw new AuthenticationError("Invalid Credentials");
       }
     },
     async register(parent, { name, email, password, isAdmin }) {
-      const existingUser = await getUserByEmail({ email });
+      const existingUser = await userModule.getByEmail({ email });
       if (existingUser && existingUser.isAdmin && !isAdmin) {
         throw new AuthenticationError("User already exist");
       }
 
-      const user = await getOrCreateUser({ name, email, password, isAdmin });
+      const user = await userModule.getOrCreate({
+        name,
+        email,
+        password,
+        isAdmin,
+      });
       if (!user) {
         throw new AuthenticationError("Couldn't create user");
       }
 
-      const token = await generateToken({ user });
+      const token = await userModule.generateToken({ user });
       return { user, token };
     },
   },
