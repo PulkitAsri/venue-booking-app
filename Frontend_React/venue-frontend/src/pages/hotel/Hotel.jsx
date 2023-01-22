@@ -1,4 +1,7 @@
 import "./hotel.css";
+import moment from "moment";
+// import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
+
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
 import MailList from "../../components/mailList/MailList";
@@ -11,32 +14,73 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { gql } from "apollo-boost";
+import { useQuery } from "@apollo/client";
+import { DateRange } from "react-date-range";
+// import { TextField } from "@mui/material";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 
+const QUERY = gql`
+  query VenueForPk($venuePk: String!, $orgPk: String!) {
+    venueForPk(venuePk: $venuePk) {
+      address
+      closingTime
+      description
+      images
+      openingTime
+      pk
+      venueName
+    }
+    orgForPk(orgPk: $orgPk) {
+      pk
+      orgName
+      email
+      website
+      address
+    }
+  }
+`;
 const Hotel = () => {
+  const { orgPk, venuePk } = useParams();
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
 
+  const { data, error, loading } = useQuery(QUERY, {
+    variables: { venuePk, orgPk },
+  });
+
+  // const photos = [
+  //   {
+  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707778.jpg?k=56ba0babbcbbfeb3d3e911728831dcbc390ed2cb16c51d88159f82bf751d04c6&o=&hp=1",
+  //   },
+  //   {
+  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707367.jpg?k=cbacfdeb8404af56a1a94812575d96f6b80f6740fd491d02c6fc3912a16d8757&o=&hp=1",
+  //   },
+  //   {
+  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708745.jpg?k=1aae4678d645c63e0d90cdae8127b15f1e3232d4739bdf387a6578dc3b14bdfd&o=&hp=1",
+  //   },
+  //   {
+  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707776.jpg?k=054bb3e27c9e58d3bb1110349eb5e6e24dacd53fbb0316b9e2519b2bf3c520ae&o=&hp=1",
+  //   },
+  //   {
+  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708693.jpg?k=ea210b4fa329fe302eab55dd9818c0571afba2abd2225ca3a36457f9afa74e94&o=&hp=1",
+  //   },
+  //   {
+  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707389.jpg?k=52156673f9eb6d5d99d3eed9386491a0465ce6f3b995f005ac71abc192dd5827&o=&hp=1",
+  //   },
+  // ];
+
   const photos = [
+    { src: "https://thumbs.dreamstime.com/b/auditorium-13235668.jpg" },
     {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707778.jpg?k=56ba0babbcbbfeb3d3e911728831dcbc390ed2cb16c51d88159f82bf751d04c6&o=&hp=1",
+      src: "https://thumbs.dreamstime.com/b/red-seats-rows-people-vienna-state-opera-auditorium-wonderful-view-theatre-concert-hall-austria-empty-parterre-191882936.jpg",
     },
+
     {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707367.jpg?k=cbacfdeb8404af56a1a94812575d96f6b80f6740fd491d02c6fc3912a16d8757&o=&hp=1",
-    },
-    {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708745.jpg?k=1aae4678d645c63e0d90cdae8127b15f1e3232d4739bdf387a6578dc3b14bdfd&o=&hp=1",
-    },
-    {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707776.jpg?k=054bb3e27c9e58d3bb1110349eb5e6e24dacd53fbb0316b9e2519b2bf3c520ae&o=&hp=1",
-    },
-    {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708693.jpg?k=ea210b4fa329fe302eab55dd9818c0571afba2abd2225ca3a36457f9afa74e94&o=&hp=1",
-    },
-    {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707389.jpg?k=52156673f9eb6d5d99d3eed9386491a0465ce6f3b995f005ac71abc192dd5827&o=&hp=1",
+      src: "https://static01.nyt.com/images/2022/01/17/arts/17broadway1/merlin_200324061_4c97c271-82ef-4aa6-8bf7-6d91851ea0de-articleLarge.jpg?quality=75&auto=webp&disable=upscale",
     },
   ];
-
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);
@@ -51,9 +95,12 @@ const Hotel = () => {
       newSlideNumber = slideNumber === 5 ? 0 : slideNumber + 1;
     }
 
-    setSlideNumber(newSlideNumber)
+    setSlideNumber(newSlideNumber);
   };
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+  console.log(data);
   return (
     <div>
       <Navbar />
@@ -83,17 +130,14 @@ const Hotel = () => {
         )}
         <div className="hotelWrapper">
           <button className="bookNow">Reserve or Book Now!</button>
-          <h1 className="hotelTitle">Tower Street Apartments</h1>
+          <h1 className="hotelTitle">{data.venueForPk.venueName}</h1>
           <div className="hotelAddress">
             <FontAwesomeIcon icon={faLocationDot} />
-            <span>Elton St 125 New york</span>
+            <span>{data.venueForPk.address}</span>
           </div>
-          <span className="hotelDistance">
-            Excellent location – 500m from center
-          </span>
-          <span className="hotelPriceHighlight">
-            Book a stay over $114 at this property and get a free airport taxi
-          </span>
+          <span className="hotelDistance">{data.orgForPk.orgName}</span>
+          <span className="hotelPriceHighlight">{`OPEN at ${data.venueForPk.openingTime}`}</span>
+          <span className="hotelPriceHighlight">{`CLOSES at ${data.venueForPk.closingTime}`}</span>
           <div className="hotelImages">
             {photos.map((photo, i) => (
               <div className="hotelImgWrapper" key={i}>
@@ -110,28 +154,34 @@ const Hotel = () => {
             <div className="hotelDetailsTexts">
               <h1 className="hotelTitle">Stay in the heart of City</h1>
               <p className="hotelDesc">
-                Located a 5-minute walk from St. Florian's Gate in Krakow, Tower
-                Street Apartments has accommodations with air conditioning and
-                free WiFi. The units come with hardwood floors and feature a
-                fully equipped kitchenette with a microwave, a flat-screen TV,
-                and a private bathroom with shower and a hairdryer. A fridge is
-                also offered, as well as an electric tea pot and a coffee
-                machine. Popular points of interest near the apartment include
-                Cloth Hall, Main Market Square and Town Hall Tower. The nearest
-                airport is John Paul II International Kraków–Balice, 16.1 km
-                from Tower Street Apartments, and the property offers a paid
-                airport shuttle service.
+                {data.venueForPk.description || `<DESCRIPTION>`}
               </p>
             </div>
             <div className="hotelDetailsPrice">
-              <h1>Perfect for a 9-night stay!</h1>
-              <span>
-                Located in the real heart of Krakow, this property has an
-                excellent location score of 9.8!
-              </span>
-              <h2>
-                <b>$945</b> (9 nights)
-              </h2>
+              <DateRange
+                editableDateInputs={true}
+                // onChange={(item) => setDate([item.selection])}
+                moveRangeOnFirstSelection={false}
+                // ranges={date}
+                // className="date"
+                minDate={new Date()}
+              />
+              <input
+                type="time"
+                id="appt"
+                name="appt"
+                min="09:00"
+                max="18:00"
+                // required
+              />
+              <input
+                type="time"
+                id="appt"
+                name="appt"
+                min="09:00"
+                max="18:00"
+                // required
+              />
               <button>Reserve or Book Now!</button>
             </div>
           </div>

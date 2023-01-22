@@ -19,6 +19,9 @@ const OrgResolvers = {
     async allOrgs(parent, args, ctx) {
       return Org.findAll();
     },
+    async orgForPk(parent, { orgPk }, ctx) {
+      return Org.findByPk(orgPk);
+    },
   },
   Mutation: {
     async createOrg(parent, { orgName, email, website, address, ownerPk }) {
@@ -89,6 +92,7 @@ const OrgTypes = gql`
   type Query {
     org: Org
     allOrgs: [Org]
+    orgForPk(orgPk: String!): Org
   }
 
   type Mutation {
@@ -114,6 +118,7 @@ const OrgPermissions = {
   Query: {
     org: and(isAuthenticated, isAdmin), //my Org
     // allOrgs: isAuthenticated,
+    // orgForPk: isAuthenticated,
   },
   Mutation: {
     createOrg: and(isAuthenticated, isAdmin),

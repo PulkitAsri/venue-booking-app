@@ -12,6 +12,9 @@ const QUERY = gql`
       address
       description
       images
+      orgPk {
+        pk
+      }
     }
   }
 `;
@@ -22,7 +25,7 @@ const FeaturedProperties = () => {
   return (
     <div className="fp">
       {data.allVenues.map((venue) => (
-        <VenueCard venue={venue} />
+        <VenueCard venue={venue} orgPk={venue.orgPk.pk} />
       ))}
       {/* <div className="fpItem">
         <img
