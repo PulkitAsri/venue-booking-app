@@ -9,26 +9,24 @@ class VenuePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as VenueArguments;
+
+    final orgPk = args.orgPk;
     return Scaffold(
-       backgroundColor: const Color(0xFFf5f5f5),
-       body: Query(
+      backgroundColor: const Color(0xFFf5f5f5),
+      body: Query(
         options: QueryOptions(
           document: parseString(
-            context.queries.fetchVenuesForOrg(),
+            context.queries.fetchVenuesForOrg("$orgPk"),
           ),
-          ),
-          builder:(result, {fetchMore, refetch}) {
-            
-          },
-         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            
-          ]
-          ),
-       ),
-      );
+        ),
+        builder: (result, {fetchMore, refetch}) {
+          return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [Text("Venue Page se data : ${result.data}")]);
+        },
+      ),
+    );
   }
 }
 

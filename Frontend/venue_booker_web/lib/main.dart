@@ -3,6 +3,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:untitled/data/models/Register.dart';
 import 'package:untitled/presentation/query_documents_provider.dart';
 import 'package:untitled/presentation/views/registeration_page.dart';
+import 'package:untitled/presentation/views/user_home_page.dart';
+import 'package:untitled/presentation/views/venue_page.dart';
 import 'package:untitled/presentation/widgets/TimeSlotsCard.dart';
 import 'data/utility/queries.dart';
 import 'presentation/widgets/Calendar.dart';
@@ -45,6 +47,8 @@ class MyApp extends StatelessWidget {
             calendar: (context) => const Calendar(),
             timeSlots: (context) => const TimeSlotsCard(),
             registerPage: (context) => const RegisterPage(),
+            userHomePage:(context) => const UserHomePage(),
+            venuePage :(context) => VenuePage(),
           },
           debugShowCheckedModeBanner: false,
         ),
