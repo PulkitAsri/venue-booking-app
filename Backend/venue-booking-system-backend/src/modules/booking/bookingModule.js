@@ -36,7 +36,7 @@ const getTakenSlotsOnDate = async ({ date }) => {
       //Date == Today and approvedStatus= APPROVED
       timeSlotStart: {
         [Op.lt]: endOfDay.format(),
-        [Op.gt]: startOfDay.format(),
+        [Op.gte]: startOfDay.format(),
       },
       approvedStatus: approvedStatuses.APPROVED,
     },
@@ -71,23 +71,25 @@ const updateStatus = async ({ bookingPk, approvedStatus }) => {
 
 const approveRequest = async ({ bookingPk }) => {
   const booking = await Booking.findByPk(bookingPk);
+  const takenSlotsOnDate = await getTakenSlotsOnDate({
+    date: booking.timeSlotStart,
+  });
+  // console.log(takenSlotsOnDate);
+
   const start = moment(booking.timeSlotStart);
   const end = moment(booking.timeSlotEnd);
 
-  //check if time slot is even free
-  const takenSlotsOnDate = await getTakenSlotsOnDate({ date: start.format() });
-  console.log(takenSlotsOnDate);
   _.forEach(takenSlotsOnDate, (slot) => {
     const approvedStart = moment(slot.timeSlotStart);
     const approvedEnd = moment(slot.timeSlotEnd);
     if (
-      (approvedStart > start && approvedEnd < start) ||
-      (approvedStart > end && approvedEnd > end)
+      (approvedStart.isSameOrBefore(start) && start.isBefore(approvedEnd)) ||
+      (approvedStart.isBefore(end) && end.isSameOrBefore(approvedEnd))
     ) {
       throw new Error("Couldn't approve request. This slot is already taken");
     }
   });
-
+  //else
   const updatedBooking = await updateStatus({
     bookingPk,
     approvedStatus: approvedStatuses.APPROVED,
