@@ -13,12 +13,19 @@ const { approvedStatuses } = require("../../modules/booking/bookingConstants");
 
 const BookingResolvers = {
   Query: {
-    async getApprovedBookingsOnDate(parent, { date }, ctx) {
-      const bookings = await bookingModule.getTakenSlotsOnDate({ date });
+    async getApprovedBookingsOnDate(parent, { date, venuePk }, ctx) {
+      const bookings = await bookingModule.getTakenSlotsOnDate({
+        date,
+        venuePk,
+      });
       return bookings;
     },
     async allBookingsForOrg(parent, { orgPk }, ctx) {
       const bookings = await bookingModule.getAllForOrg({ orgPk });
+      return bookings;
+    },
+    async getApprovedBookingsForVenuePk(parent, { venuePk }, ctx) {
+      const bookings = await bookingModule.getTakenSlotsForVenue({ venuePk });
       return bookings;
     },
   },
@@ -68,8 +75,9 @@ const BookingTypes = gql`
   } 
 
   type Query {
-    getApprovedBookingsOnDate(date: String): [Booking]
+    getApprovedBookingsOnDate(date: String, venuePk:String!): [Booking]
     allBookingsForOrg(orgPk: String!): [Booking]
+    getApprovedBookingsForVenuePk(venuePk:String!):[Booking]
   }
 
   type Mutation {
