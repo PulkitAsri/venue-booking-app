@@ -83,9 +83,15 @@ const Header = ({ type }) => {
         {type !== "list" && (
           <>
             <h1 className="headerTitle">Book Venues with Ease.</h1>
-            <p className="headerDesc">A one stop destination for all your venue booking needs!</p>
-            <button className="headerBtn" onClick={navigateToLogin}>Sign in / Register</button>
-            
+            <p className="headerDesc">
+              A one stop destination for all your venue booking needs!
+            </p>
+            {!localStorage.getItem("token") && (
+              <button className="headerBtn" onClick={navigateToLogin}>
+                Sign in / Register
+              </button>
+            )}
+
             <div className="headerSearch">
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />

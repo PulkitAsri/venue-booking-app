@@ -80,7 +80,7 @@ const MUTATION = gql`
 `;
 
 const QUERY = gql`
-  query VenueForPk($venuePk: String!, $orgPk: String!) {
+  query VenueForPk($venuePk: String!, $orgPk: String!, $date: String) {
     venueForPk(venuePk: $venuePk) {
       address
       closingTime
@@ -219,7 +219,6 @@ const VenuePage = () => {
             -1
           )}`}</span>
           <div className="hotelDetailsTexts">
-
             <h3> About Venue:</h3>
             <p className="hotelDesc">
               {data.venueForPk.description || `<DESCRIPTION>`}
@@ -297,7 +296,6 @@ const VenuePage = () => {
                   value={date}
                   minDate={new Date()}
                   onChange={(newValue) => {
-
                     // console.log(newValue);
                     setDate(newValue);
                   }}

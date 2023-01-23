@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import styles from "./newLogin.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { LOGIN } from '../../constants/queries';
-import { useMutation } from '@apollo/client';
-
+import { LOGIN } from "../../constants/queries";
+import { useMutation } from "@apollo/client";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,93 +15,80 @@ const Login = () => {
     }
   };
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const navigateToHome = () => {
-    navigate("/", {state: { data }});
+    navigate("/", { state: { data } });
   };
 
-  const [loginFunction, { data, loading, error }] = useMutation(LOGIN)
+  const [loginFunction, { data, loading, error }] = useMutation(LOGIN);
 
-  async function handleSubmit(event) {
+  const handleSubmit = async (event) => {
     // event.preventDefault();
     console.log(`Logging in with email: ${email} and password: ${password}`);
     await loginFunction({ variables: { email, password } });
+    if (data?.login) {
+      localStorage.setItem("token", data.login.token);
+      //set user to context
+      // navigateToHome();
+    }
     console.log(data);
-    navigateToHome();
   };
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className={styles.login}>
-      <div className={styles.nav}/>
+      <div className={styles.nav} />
       <div className={styles.form}>
         <h2 className={styles.formheading}>Sign in to VenBooker</h2>
         <form action="">
           <label htmlFor="email">Email address</label>
+          {error && <span>error</span>}
           <input
-            onChange={ event => setEmail(event.target.value) }
+            onChange={(event) => setEmail(event.target.value)}
             className={styles.input}
             type="email"
             value={email}
             name="email"
-            id="email" 
+            id="email"
             autoFocus
           />
 
-            <div>
-              <label htmlFor="password1">Password</label>
-              <input
-                onChange={ event => setPassword(event.target.value) }
-                value={password}
-                className={styles.input}
-                type="password"
-                name="password1"
-                id="password1"
-              />
-            </div>
+          <div>
+            <label htmlFor="password1">Password</label>
+            <input
+              onChange={(event) => setPassword(event.target.value)}
+              value={password}
+              className={styles.input}
+              type="password"
+              name="password1"
+              id="password1"
+            />
+          </div>
           <input
             className={styles.button}
             type="submit"
             defaultValue="Create account"
-            onClick={() => {
-                handleSubmit();
-                navigateToHome();
-            }
-            }
+            onClick={async () => {
+              await handleSubmit();
+              if (localStorage.getItem("token")) navigateToHome();
+            }}
           />
         </form>
       </div>
-
-      {/* <div className={styles.line}>
-        <hr className={styles.hr} />
-        <p className={styles.p}>or use one of these options</p>
-        <hr className={styles.hr} />
-      </div> */}
-
-     
-
-      {/* <div className={styles.line1}>
-        <hr />
-        <p className={styles.p1}>
-          By signing in or creating an account, you agree with our{" "}
-          <span style={{ color: "blue" }}>Terms & Conditions</span> and{" "}
-          <span style={{ color: "blue" }}>Privacy Statement</span>
-        </p>
-        <hr />
-      </div> */}
-
       <div className={styles.line1}>
         <p className={styles.p1}>If you don't have an account, you can</p>
-        <a className={styles.p1} href="/signUpPage">Register Here</a>
+        <a className={styles.p1} href="/signUpPage">
+          Register Here
+        </a>
       </div>
     </div>
   );
 };
 
 export default Login;
-
-
 
 // export const Logout = () => {
 //   const logoutres = () => {
@@ -121,4 +107,3 @@ export default Login;
 //   </div>
 
 // }
-
