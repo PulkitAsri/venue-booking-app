@@ -82,6 +82,9 @@ const VenuePage = () => {
   const [open, setOpen] = useState(false);
 
   const [date, setDate] = useState(new Date());
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+
   const [calendarMode, setCalendarMode] = useState("week");
 
   const { data, error, loading } = useQuery(QUERY, {
@@ -247,19 +250,29 @@ const VenuePage = () => {
               </LocalizationProvider>
               <input
                 type="time"
-                id="appt"
-                name="appt"
+                id="startTime"
+                name="startTime"
                 min="09:00"
-                max="18:00"
+                max="17:00"
+                value={startTime}
+                onChange={(e) => {
+                  let hour = e.target.value.split(":")[0];
+                  setStartTime(`${hour}:00`);
+                }}
                 // required
               />
               <input
                 type="time"
-                id="appt"
-                name="appt"
-                min="09:00"
-                max="18:00"
+                id="endTime"
+                name="endTime"
+                min={startTime ? startTime : "09:00"}
+                max="17:00"
                 // required
+                alue={endTime}
+                onChange={(e) => {
+                  let hour = e.target.value.split(":")[0];
+                  setEndTime(`${hour}:00`);
+                }}
               />
               <button>Reserve or Book Now!</button>
             </div>
