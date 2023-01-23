@@ -268,7 +268,7 @@ const VenuePage = () => {
                 min={startTime ? startTime : "09:00"}
                 max="17:00"
                 // required
-                alue={endTime}
+                value={endTime}
                 onChange={(e) => {
                   let hour = e.target.value.split(":")[0];
                   setEndTime(`${hour}:00`);
