@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { gql } from "apollo-boost";
-import "./featured.css";
+import "./orgContainer.css";
 import OrgItem from "./OrgItem";
 
 const QUERY = gql`
@@ -15,7 +15,7 @@ const QUERY = gql`
   }
 `;
 
-const Featured = () => {
+const OrgContainer = () => {
   const { data, loading, error } = useQuery(QUERY);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
@@ -23,10 +23,10 @@ const Featured = () => {
   return (
     <div className="featured">
       {data.allOrgs.map((org) => (
-        <OrgItem org={org} />
+        <OrgItem org={org} key={org.pk} />
       ))}
     </div>
   );
 };
 
-export default Featured;
+export default OrgContainer;

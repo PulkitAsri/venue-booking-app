@@ -1,7 +1,7 @@
-import "./hotel.css";
+import "./venuePage.css";
 import moment from "moment";
 // import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
-
+import Chip from "@mui/material/Chip";
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
 import MailList from "../../components/mailList/MailList";
@@ -18,6 +18,31 @@ import { useParams } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/client";
 import { DateRange } from "react-date-range";
+
+import Paper from "@mui/material/Paper";
+import {
+  Scheduler,
+  WeekView,
+  Appointments,
+  AppointmentTooltip,
+  DayView,
+  MonthView,
+  Toolbar,
+  DateNavigator,
+  TodayButton,
+  ViewSwitcher,
+} from "@devexpress/dx-react-scheduler-material-ui";
+import { appointments } from "../../constants/testData/appointments";
+
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { convertCalendarData } from "../../lib/convertCalendaeData";
+import { ViewState } from "@devexpress/dx-react-scheduler";
+// import {} from "@devexpress/dx-react-scheduler";
+
 // import { TextField } from "@mui/material";
 // import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 
@@ -39,44 +64,35 @@ const QUERY = gql`
       website
       address
     }
+    getApprovedBookingsForVenuePk(venuePk: $venuePk) {
+      approvedStatus
+      bookedAt
+      pk
+      timeSlotEnd
+      timeSlotStart
+      venuePk {
+        address
+      }
+    }
   }
 `;
-const Hotel = () => {
+const VenuePage = () => {
   const { orgPk, venuePk } = useParams();
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
 
-  const { data, error, loading } = useQuery(QUERY, {
-    variables: { venuePk, orgPk },
-  });
+  const [date, setDate] = useState(new Date());
+  const [calendarMode, setCalendarMode] = useState("week");
 
-  // const photos = [
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707778.jpg?k=56ba0babbcbbfeb3d3e911728831dcbc390ed2cb16c51d88159f82bf751d04c6&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707367.jpg?k=cbacfdeb8404af56a1a94812575d96f6b80f6740fd491d02c6fc3912a16d8757&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708745.jpg?k=1aae4678d645c63e0d90cdae8127b15f1e3232d4739bdf387a6578dc3b14bdfd&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707776.jpg?k=054bb3e27c9e58d3bb1110349eb5e6e24dacd53fbb0316b9e2519b2bf3c520ae&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708693.jpg?k=ea210b4fa329fe302eab55dd9818c0571afba2abd2225ca3a36457f9afa74e94&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707389.jpg?k=52156673f9eb6d5d99d3eed9386491a0465ce6f3b995f005ac71abc192dd5827&o=&hp=1",
-  //   },
-  // ];
+  const { data, error, loading } = useQuery(QUERY, {
+    variables: { venuePk, orgPk, date: "2023-01-21 10:00:00+05:30" },
+  });
 
   const photos = [
     { src: "https://thumbs.dreamstime.com/b/auditorium-13235668.jpg" },
     {
       src: "https://thumbs.dreamstime.com/b/red-seats-rows-people-vienna-state-opera-auditorium-wonderful-view-theatre-concert-hall-austria-empty-parterre-191882936.jpg",
     },
-
     {
       src: "https://static01.nyt.com/images/2022/01/17/arts/17broadway1/merlin_200324061_4c97c271-82ef-4aa6-8bf7-6d91851ea0de-articleLarge.jpg?quality=75&auto=webp&disable=upscale",
     },
@@ -100,7 +116,9 @@ const Hotel = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
-  console.log(data);
+  console.log(
+    convertCalendarData({ allBookings: data.getApprovedBookingsForVenuePk })
+  );
   return (
     <div>
       <Navbar />
@@ -136,8 +154,21 @@ const Hotel = () => {
             <span>{data.venueForPk.address}</span>
           </div>
           <span className="hotelDistance">{data.orgForPk.orgName}</span>
-          <span className="hotelPriceHighlight">{`OPEN at ${data.venueForPk.openingTime.slice(0, -1)}`}</span>
-          <span className="hotelPriceHighlight">{`CLOSES at ${data.venueForPk.closingTime.slice(0, -1)}`}</span>
+          <span className="hotelPriceHighlight">{`OPEN at ${data.venueForPk.openingTime.slice(
+            0,
+            -1
+          )}`}</span>
+          <span className="hotelPriceHighlight">{`CLOSES at ${data.venueForPk.closingTime.slice(
+            0,
+            -1
+          )}`}</span>
+          <div className="hotelDetailsTexts">
+            <h1 className="hotelTitle"> About Venue:</h1>
+            <p className="hotelDesc">
+              {data.venueForPk.description || `<DESCRIPTION>`}
+            </p>
+          </div>
+
           <div className="hotelImages">
             {photos.map((photo, i) => (
               <div className="hotelImgWrapper" key={i}>
@@ -152,20 +183,68 @@ const Hotel = () => {
           </div>
           <div className="hotelDetails">
             <div className="hotelDetailsTexts">
-              <h1 className="hotelTitle"> { data.venueForPk.venueName }</h1>
-              <p className="hotelDesc">
-                {data.venueForPk.description || `<DESCRIPTION>`}
-              </p>
+              <div className="hotelDetailsTexts" style={{ marginTop: "30px" }}>
+                <h1 className="hotelTitle" style={{ color: "white" }}>
+                  Reserve your slot
+                </h1>
+                {/* <h3 style={{ color: "white" }}>Reserve your slot</h3> */}
+                {/* <div className="selectCalendarType">
+                  <ToggleButtonGroup
+                    color="standard"
+                    value={calendarMode}
+                    exclusive
+                    onChange={(e, val) => setCalendarMode(val)}
+                  >
+                    <ToggleButton value="week">Week View</ToggleButton>
+                    <ToggleButton value="today">Today</ToggleButton>
+                  </ToggleButtonGroup>
+                </div> */}
+
+                {/* {data.getApprovedBookingsOnDate.map((booking) => (
+                  <Chip
+                    label={`${moment(booking.timeSlotStart).format(
+                      "MMMM Do YYYY, h:mm:ss a"
+                    )} - ${moment(booking.timeSlotEnd).format(
+                      "MMMM Do YYYY, h:mm:ss a"
+                    )}`}
+                    color="error"
+                    variant="outlined"
+                  ></Chip>
+                ))} */}
+              </div>
+              <Paper>
+                <Scheduler
+                  data={convertCalendarData({
+                    allBookings: data.getApprovedBookingsForVenuePk,
+                  })}
+                  height={660}
+                >
+                  <ViewState
+                    defaultCurrentDate={new Date()}
+                    defaultCurrentViewName="Week"
+                  />
+                  <WeekView startDayHour={10} endDayHour={17} />
+                  <DayView startDayHour={10} endDayHour={17} />
+                  <Toolbar />
+                  <DateNavigator />
+                  <TodayButton />
+                  <ViewSwitcher />
+                  <Appointments />
+                </Scheduler>
+              </Paper>
             </div>
             <div className="hotelDetailsPrice">
-              <DateRange
-                editableDateInputs={true}
-                // onChange={(item) => setDate([item.selection])}
-                moveRangeOnFirstSelection={false}
-                // ranges={date}
-                // className="date"
-                minDate={new Date()}
-              />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <StaticDatePicker
+                  displayStaticWrapperAs="desktop"
+                  value={date}
+                  minDate={new Date()}
+                  onChange={(newValue) => {
+                    setDate(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
               <input
                 type="time"
                 id="appt"
@@ -193,4 +272,4 @@ const Hotel = () => {
   );
 };
 
-export default Hotel;
+export default VenuePage;

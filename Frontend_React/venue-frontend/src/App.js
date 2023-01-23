@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
-import Hotel from "./pages/hotel/Hotel";
-import List from "./pages/list/List";
+import VenuePage from "./pages/venue/VenuePage";
+import VenueList from "./pages/venueList/VenueList";
 import LoginPage from "./pages/login/loginPage";
 
 function App() {
@@ -9,10 +9,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/:orgPk/venues" element={<List />} />
-        {/* <Route path="/venues" element={<List />} /> */}
-        <Route path="/loginPage" element={<LoginPage/>} />
-        <Route path="/:orgPk/venues/:venuePk" element={<Hotel />} />
+        <Route path="/:orgPk/venues" element={<VenueList />} />
+        {/* <Route path="/venues" element={<VenueList />} /> */}
+        <Route path="/loginPage" element={<LoginPage />} />
+        <Route path="/:orgPk/venues/:venuePk" element={<VenuePage />} />
       </Routes>
     </BrowserRouter>
   );

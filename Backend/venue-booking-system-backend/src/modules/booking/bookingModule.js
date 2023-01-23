@@ -27,7 +27,7 @@ const create = async (args) => {
   console.log(booking);
   return booking;
 };
-const getTakenSlotsOnDate = async ({ date }) => {
+const getTakenSlotsOnDate = async ({ date, venuePk }) => {
   const startOfDay = moment(date).startOf("day");
   const endOfDay = moment(date).endOf("day");
   console.log(startOfDay, endOfDay);
@@ -39,6 +39,19 @@ const getTakenSlotsOnDate = async ({ date }) => {
         [Op.gte]: startOfDay.format(),
       },
       approvedStatus: approvedStatuses.APPROVED,
+      venuePk,
+    },
+  });
+
+  // console.log(bookings);
+  return bookings;
+};
+
+const getTakenSlotsForVenue = async ({ venuePk }) => {
+  const bookings = await Booking.findAll({
+    where: {
+      approvedStatus: approvedStatuses.APPROVED,
+      venuePk,
     },
   });
 
@@ -104,4 +117,5 @@ module.exports = {
   getAllForOrg,
   updateStatus,
   approveRequest,
+  getTakenSlotsForVenue,
 };
