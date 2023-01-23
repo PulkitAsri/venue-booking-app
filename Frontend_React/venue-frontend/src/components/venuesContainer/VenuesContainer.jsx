@@ -20,7 +20,7 @@ const QUERY = gql`
     }
   }
 `;
-const FeaturedProperties = () => {
+const VenueContainer = () => {
   const { data, loading, error } = useQuery(QUERY);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
@@ -75,4 +75,4 @@ const FeaturedProperties = () => {
   );
 };
 
-export default FeaturedProperties;
+export default VenueContainer;
