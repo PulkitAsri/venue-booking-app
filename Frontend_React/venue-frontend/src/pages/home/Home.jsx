@@ -1,10 +1,8 @@
 import OrgContainer from "../../components/orgContainer/OrgContainer";
 import VenueContainer from "../../components/venuesContainer/VenuesContainer";
-import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import MailList from "../../components/mailList/MailList";
 import Navbar from "../../components/navbar/Navbar";
-import PropertyList from "../../components/propertyList/PropertyList";
 import "./home.css";
 
 const Home = () => {

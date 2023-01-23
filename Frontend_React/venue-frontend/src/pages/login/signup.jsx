@@ -21,16 +21,20 @@ const SignUp = () => {
 
   const navigate = useNavigate();
   const navigateToHome = () => {
-    navigate("/", {state: { data }});
+    navigate("/", { state: { data }, replace: true });
   };
 
 
   const [registerFunction, { data, loading, error }] = useMutation(REGISTER)
 
   async function handleSubmit(event) {
-    event.preventDefault();
+    // event.preventDefault();
     console.log(`Registering with email: ${email} and password: ${password}`);
-    await registerFunction({ variables: { name, email, password, isAdmin: true } });
+    await registerFunction({ variables: { 
+        name,
+        email, 
+        password, 
+        "isAdmin": true } });
     console.log(data);
     navigateToHome();
   }
@@ -75,7 +79,7 @@ const SignUp = () => {
             </div>
           <input
             className={styles.button}
-            onSubmit={ 
+            onClick={ 
                 //TODO: THIS IS NOT NAVIGATING TO NEXT SCREEN, FIX.
                 () => {
                 navigateToHome();
