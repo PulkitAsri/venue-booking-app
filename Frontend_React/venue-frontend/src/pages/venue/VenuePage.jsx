@@ -80,7 +80,7 @@ const MUTATION = gql`
 `;
 
 const QUERY = gql`
-  query VenueForPk($venuePk: String!, $orgPk: String!, $date: String) {
+  query VenueForPk($venuePk: String!, $orgPk: String!) {
     venueForPk(venuePk: $venuePk) {
       address
       closingTime

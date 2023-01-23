@@ -37,15 +37,17 @@ const Login = () => {
   };
 
   if (loading) return <p>Loading...</p>;
+  if (error) console.log(error);
 
   return (
     <div className={styles.login}>
       <div className={styles.nav} />
       <div className={styles.form}>
         <h2 className={styles.formheading}>Sign in to VenBooker</h2>
+        {error && <span style={{ color: "red" }}>{error.message}</span>}
         <form action="">
           <label htmlFor="email">Email address</label>
-          {error && <span>error</span>}
+
           <input
             onChange={(event) => setEmail(event.target.value)}
             className={styles.input}
@@ -73,7 +75,7 @@ const Login = () => {
             defaultValue="Create account"
             onClick={async () => {
               await handleSubmit();
-              if (localStorage.getItem("token")) navigateToHome();
+              if (!error) navigateToHome();
             }}
           />
         </form>
