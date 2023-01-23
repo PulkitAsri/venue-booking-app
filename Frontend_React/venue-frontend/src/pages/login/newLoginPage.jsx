@@ -26,7 +26,7 @@ const Login = () => {
   const [loginFunction, { data, loading, error }] = useMutation(LOGIN)
 
   async function handleSubmit(event) {
-    event.preventDefault();
+    // event.preventDefault();
     console.log(`Logging in with email: ${email} and password: ${password}`);
     await loginFunction({ variables: { email, password } });
     console.log(data);

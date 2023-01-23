@@ -38,6 +38,13 @@ import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+// import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+// import { convertCalendarData } from "../../lib/convertCalendaeData";
+// import { ViewState } from "@devexpress/dx-react-scheduler";
+// import {} from "@devexpress/dx-react-scheduler";
+
+// import { TextField } from "@mui/material";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import {
   Alert,
   AlertTitle,
@@ -108,6 +115,7 @@ const VenuePage = () => {
   const [open, setOpen] = useState(false);
 
   const [date, setDate] = useState(new Date());
+
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
 
@@ -211,6 +219,7 @@ const VenuePage = () => {
             -1
           )}`}</span>
           <div className="hotelDetailsTexts">
+
             <h3> About Venue:</h3>
             <p className="hotelDesc">
               {data.venueForPk.description || `<DESCRIPTION>`}
@@ -288,12 +297,14 @@ const VenuePage = () => {
                   value={date}
                   minDate={new Date()}
                   onChange={(newValue) => {
-                    console.log(newValue);
+
+                    // console.log(newValue);
                     setDate(newValue);
                   }}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
+
               <form onSubmit={handleSubmit}>
                 <input
                   type="time"

@@ -48,6 +48,7 @@
 }
 
 .headerSearch {
+  visibility: hidden;
   height: 30px;
   background-color: white;
   border: 3px solid #febb02;

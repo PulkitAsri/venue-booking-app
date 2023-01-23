@@ -17,7 +17,7 @@ export const LOGIN = gql`
     }
     `;
 
-const REGISTER = gql`
+export const REGISTER = gql`
     mutation Mutation($name: String!, $email: String!, $password: String!, $isAdmin: Boolean!) {
         register(name: $name, email: $email, password: $password, isAdmin: $isAdmin) {
         user {
@@ -32,7 +32,7 @@ const REGISTER = gql`
     `;
 
 
-const ME = gql`
+export const ME = gql`
     query Query {
         me {
         pk
@@ -43,7 +43,7 @@ const ME = gql`
     }  
     `;
 
- const USER = gql`
+ export const USER = gql`
     query Query($pk: String!) {
         user(pk: $pk) {
         pk
@@ -55,7 +55,7 @@ const ME = gql`
     `;
 
 
-const ORG_DATA = gql`
+export const ORG_DATA = gql`
     query Query {
         org {
         pk
@@ -74,7 +74,7 @@ const ORG_DATA = gql`
     `;
 
 
-const ALL_ORGS = gql`
+export const ALL_ORGS = gql`
     query Query {
         allOrgs {
         pk
@@ -93,7 +93,7 @@ const ALL_ORGS = gql`
     `;
 
 
-const CREATE_ORG = gql`
+export const CREATE_ORG = gql`
     mutation Mutation($orgName: String!, $email: String!, $website: String, $address: String, $ownerPk: String) {
         createOrg(orgName: $orgName, email: $email, website: $website, address: $address, ownerPk: $ownerPk) {
         pk
@@ -111,7 +111,7 @@ const CREATE_ORG = gql`
     }
     `;
 
-const UPDATE_ORG = gql`
+export const UPDATE_ORG = gql`
     mutation UpdateOrg($orgPk: String!, $orgName: String, $email: String, $website: String, $address: String) {
         updateOrg(orgPk: $orgPk, orgName: $orgName, email: $email, website: $website, address: $address) {
         pk
@@ -129,7 +129,7 @@ const UPDATE_ORG = gql`
     }
     `;
 
-const ALL_VENUES = gql`
+export const ALL_VENUES = gql`
     query Query {
         allVenues {
         pk
@@ -144,7 +144,7 @@ const ALL_VENUES = gql`
     `;
 
 
-const VENUE_FOR_ORG = gql`
+export const VENUE_FOR_ORG = gql`
     query Query($orgPk: String!) {
         allVenuesForOrg(orgPk: $orgPk) {
         venueName
@@ -158,7 +158,7 @@ const VENUE_FOR_ORG = gql`
     }
     `;
   
-const ALL_BOOKINGS = gql`
+export const ALL_BOOKINGS = gql`
     query Query($orgPk: String!) {
         allBookingsForOrg(orgPk: $orgPk) {
         pk
@@ -186,7 +186,7 @@ const ALL_BOOKINGS = gql`
     }
     `;
 
-const APPROVED_BOOKING_ON_DATE = gql`
+export const APPROVED_BOOKING_ON_DATE = gql`
     query Query($date: String) {
         getApprovedBookingsOnDate(date: $date) {
         timeSlotStart

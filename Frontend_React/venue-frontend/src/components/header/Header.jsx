@@ -48,7 +48,7 @@ const Header = ({ type }) => {
   };
 
   const navigateToLogin = () => {
-    navigate("/loginPage");
+    navigate("/newLoginPage");
   };
 
   return (
