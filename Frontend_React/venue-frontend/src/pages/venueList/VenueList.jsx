@@ -17,6 +17,10 @@ const QUERY = gql`
       pk
       venueName
     }
+    orgForPk(orgPk: $orgPk) {
+      pk
+      orgName
+    }
   }
 `;
 const VenueList = () => {
@@ -31,12 +35,14 @@ const VenueList = () => {
   if (error) return <p>Error : {error.message}</p>;
   return (
     <div>
-      {console.log(data)}
       <Navbar />
       <Header type="list" />
       <div className="listContainer">
         <div className="listWrapper">
           <div className="listResult">
+            <h1 style={{ marginBottom: "20px" }}>
+              {data.orgForPk.orgName}'s venues
+            </h1>
             {data.allVenuesForOrg.map((venue) => (
               <VenueItem venue={venue} />
             ))}

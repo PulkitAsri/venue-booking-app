@@ -1,7 +1,7 @@
 import "./venuePage.css";
 import moment from "moment";
 // import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
-
+import Chip from "@mui/material/Chip";
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
 import MailList from "../../components/mailList/MailList";
@@ -22,7 +22,7 @@ import { DateRange } from "react-date-range";
 // import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 
 const QUERY = gql`
-  query VenueForPk($venuePk: String!, $orgPk: String!) {
+  query VenueForPk($venuePk: String!, $orgPk: String!, $date: String) {
     venueForPk(venuePk: $venuePk) {
       address
       closingTime
@@ -39,6 +39,13 @@ const QUERY = gql`
       website
       address
     }
+    getApprovedBookingsOnDate(date: $date) {
+      approvedStatus
+      bookedAt
+      pk
+      timeSlotEnd
+      timeSlotStart
+    }
   }
 `;
 const VenuePage = () => {
@@ -47,7 +54,7 @@ const VenuePage = () => {
   const [open, setOpen] = useState(false);
 
   const { data, error, loading } = useQuery(QUERY, {
-    variables: { venuePk, orgPk },
+    variables: { venuePk, orgPk, date: "2023-01-21 10:00:00+05:30" },
   });
 
   // const photos = [
@@ -158,10 +165,26 @@ const VenuePage = () => {
           </div>
           <div className="hotelDetails">
             <div className="hotelDetailsTexts">
-              <h1 className="hotelTitle"> {data.venueForPk.venueName}</h1>
+              <h1 className="hotelTitle"> About Venue:</h1>
               <p className="hotelDesc">
                 {data.venueForPk.description || `<DESCRIPTION>`}
               </p>
+              <div className="hotelDetailsTexts" style={{ marginTop: "30px" }}>
+                <h1 className="hotelTitle">Booked Slots</h1>
+                {/* <Chip label="success" color="error" variant="outlined" /> */}
+                {/* {console.log(data)} */}
+                {data.getApprovedBookingsOnDate.map((booking) => (
+                  <Chip
+                    label={`${moment(booking.timeSlotStart).format(
+                      "MMMM Do YYYY, h:mm:ss a"
+                    )} - ${moment(booking.timeSlotEnd).format(
+                      "MMMM Do YYYY, h:mm:ss a"
+                    )}`}
+                    color="error"
+                    variant="outlined"
+                  ></Chip>
+                ))}
+              </div>
             </div>
             <div className="hotelDetailsPrice">
               <DateRange

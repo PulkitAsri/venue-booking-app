@@ -1,3 +1,5 @@
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import "./orgContainer.css";
 
@@ -17,7 +19,14 @@ const OrgItem = ({ org }) => {
       /> */}
       <div className="featuredTitles">
         <h1>{org.orgName}</h1>
-        <h2>{org.address}</h2>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <h4>{`@ ${org.website}`}</h4>
+        </div>
+        <div style={{ height: "5px" }}></div>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <FontAwesomeIcon icon={faLocationDot} />
+          <h3>{org.address}</h3>
+        </div>
       </div>
     </div>
   );

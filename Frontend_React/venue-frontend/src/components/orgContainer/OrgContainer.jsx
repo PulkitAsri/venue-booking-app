@@ -23,7 +23,7 @@ const OrgContainer = () => {
   return (
     <div className="featured">
       {data.allOrgs.map((org) => (
-        <OrgItem org={org} />
+        <OrgItem org={org} key={org.pk} />
       ))}
     </div>
   );
