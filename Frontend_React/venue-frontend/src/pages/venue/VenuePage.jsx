@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { gql } from "apollo-boost";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { DateRange } from "react-date-range";
 
 import Paper from "@mui/material/Paper";
@@ -38,13 +38,46 @@ import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { convertCalendarData } from "../../lib/convertCalendaeData";
-import { ViewState } from "@devexpress/dx-react-scheduler";
+// import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+// import { convertCalendarData } from "../../lib/convertCalendaeData";
+// import { ViewState } from "@devexpress/dx-react-scheduler";
 // import {} from "@devexpress/dx-react-scheduler";
 
 // import { TextField } from "@mui/material";
 // import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
+import {
+  Alert,
+  AlertTitle,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
+import { convertCalendarData } from "../../lib/convertCalendaeData";
+import { ViewState } from "@devexpress/dx-react-scheduler";
+import { photos } from "../../constants/testData/photos";
+
+const MUTATION = gql`
+  mutation Mutation(
+    $timeSlotStart: DateTime!
+    $timeSlotEnd: DateTime!
+    $venuePk: String!
+    $bookedAt: DateTime!
+    $bookedBy: String!
+  ) {
+    createBooking(
+      timeSlotStart: $timeSlotStart
+      timeSlotEnd: $timeSlotEnd
+      venuePk: $venuePk
+      bookedAt: $bookedAt
+      bookedBy: $bookedBy
+    ) {
+      approvedStatus
+      pk
+      description
+      timeSlotEnd
+      timeSlotStart
+    }
+  }
+`;
 
 const QUERY = gql`
   query VenueForPk($venuePk: String!, $orgPk: String!) {
@@ -82,34 +115,57 @@ const VenuePage = () => {
   const [open, setOpen] = useState(false);
 
   const [date, setDate] = useState(new Date());
+
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+
   const [calendarMode, setCalendarMode] = useState("week");
 
-  const { data, error, loading } = useQuery(QUERY, {
+  const {
+    data,
+    error,
+    loading,
+    refetch: refetchData,
+  } = useQuery(QUERY, {
     variables: { venuePk, orgPk, date: "2023-01-21 10:00:00+05:30" },
   });
 
-  const photos = [
-    { src: "https://thumbs.dreamstime.com/b/auditorium-13235668.jpg" },
-    {
-      src: "https://thumbs.dreamstime.com/b/red-seats-rows-people-vienna-state-opera-auditorium-wonderful-view-theatre-concert-hall-austria-empty-parterre-191882936.jpg",
-    },
-    {
-      src: "https://static01.nyt.com/images/2022/01/17/arts/17broadway1/merlin_200324061_4c97c271-82ef-4aa6-8bf7-6d91851ea0de-articleLarge.jpg?quality=75&auto=webp&disable=upscale",
-    },
-  ];
+  const [
+    createBooking,
+    { data: bookingData, loading: bookingLoading, error: bookingError },
+  ] = useMutation(MUTATION);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const x = moment(date).format("DD-MM-YYYY");
+    console.log("hehehehe", x);
+    const start = moment(`${x} ${startTime}`, "DD-MM-YYYY HH:mm").toISOString();
+    const end = moment(`${x} ${endTime}`, "DD-MM-YYYY HH:mm").toISOString();
+    // console.log(start, end);
+    // console.log(startTime, endTime);
+    if (startTime && endTime) {
+      await createBooking({
+        variables: {
+          timeSlotStart: start,
+          timeSlotEnd: end,
+          venuePk: venuePk,
+          bookedAt: new Date(),
+          bookedBy: "83fe8033-6991-424a-8804-fa491128fcac",
+        },
+      });
+      await refetchData();
+    }
+
+    console.log(data);
+  };
+
   const handleOpen = (i) => {
-    setSlideNumber(i);
+    setSlideNumber(i % photos.length);
     setOpen(true);
   };
 
   const handleMove = (direction) => {
-    let newSlideNumber;
-
-    if (direction === "l") {
-      newSlideNumber = slideNumber === 0 ? 5 : slideNumber - 1;
-    } else {
-      newSlideNumber = slideNumber === 5 ? 0 : slideNumber + 1;
-    }
+    const newSlideNumber = (slideNumber + photos.length - 1) % photos.length;
 
     setSlideNumber(newSlideNumber);
   };
@@ -163,7 +219,8 @@ const VenuePage = () => {
             -1
           )}`}</span>
           <div className="hotelDetailsTexts">
-            <h1 className="hotelTitle"> About Venue:</h1>
+
+            <h3> About Venue:</h3>
             <p className="hotelDesc">
               {data.venueForPk.description || `<DESCRIPTION>`}
             </p>
@@ -240,28 +297,58 @@ const VenuePage = () => {
                   value={date}
                   minDate={new Date()}
                   onChange={(newValue) => {
+
+                    // console.log(newValue);
                     setDate(newValue);
                   }}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
-              <input
-                type="time"
-                id="appt"
-                name="appt"
-                min="09:00"
-                max="18:00"
-                // required
-              />
-              <input
-                type="time"
-                id="appt"
-                name="appt"
-                min="09:00"
-                max="18:00"
-                // required
-              />
-              <button>Reserve or Book Now!</button>
+
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="time"
+                  id="startTime"
+                  name="startTime"
+                  min="09:00"
+                  max="17:00"
+                  value={startTime}
+                  onChange={(e) => {
+                    let hour = e.target.value.split(":")[0];
+                    setStartTime(`${hour}:00`);
+                  }}
+                  // required
+                />
+                <input
+                  type="time"
+                  id="endTime"
+                  name="endTime"
+                  min={startTime ? startTime : "09:00"}
+                  max="17:00"
+                  // required
+                  value={endTime}
+                  onChange={(e) => {
+                    let hour = e.target.value.split(":")[0];
+                    setEndTime(`${hour}:00`);
+                  }}
+                />
+                <button className="finalButton" type="submit">
+                  Reserve or Book Now!
+                </button>
+                {bookingData && (
+                  <Alert severity="success">
+                    <AlertTitle>Success</AlertTitle>
+                    Successfully Created a booking. —{" "}
+                    <strong>check it out!</strong>
+                  </Alert>
+                )}
+                {bookingError && (
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    Couldn't create booking. — <strong>check it out!</strong>
+                  </Alert>
+                )}
+              </form>
             </div>
           </div>
         </div>
