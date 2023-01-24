@@ -31,6 +31,5 @@
 }
 
 .featuredItem:hover {
-  /* zoom: 103%; */
-  scale: 105%;
+  scale: 108%;
 }

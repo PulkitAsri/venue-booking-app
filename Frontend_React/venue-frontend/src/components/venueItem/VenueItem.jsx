@@ -7,7 +7,7 @@ const VenueItem = ({ venue }) => {
   const closingTime = venue.closingTime.slice(0, -1);
 
   return (
-    <div className="searchItem">
+    <div className="venueItem">
       <img
         src="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
         alt=""
@@ -19,12 +19,8 @@ const VenueItem = ({ venue }) => {
         <span className="siTaxiOp">
           {openingTime} - {closingTime}
         </span>
-        <span className="siSubtitle">
-          {venue.address}
-        </span>
-        <span className="siFeatures">
-          {venue.description}
-        </span>
+        <span className="siSubtitle">{venue.address}</span>
+        <span className="siFeatures">{venue.description}</span>
       </div>
       <div className="siDetails">
         <div className="siRating">

@@ -77,6 +77,9 @@ p {
   object-fit: cover;
   cursor: pointer;
 }
+/* .CalendarWrapper {
+  display: absoulute;
+} */
 
 .hotelDetails {
   display: flex;
@@ -85,7 +88,35 @@ p {
   margin-top: 20px;
   padding: 20px;
   background-color: #0071c2;
+  position: relative;
 }
+
+.hotelDetails::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-image: url("path/to/spiral.svg"); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: rotate(45deg) skewX(30deg);
+}
+
+.spiral {
+  position: absolute;
+  top: -15px;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+}
+/* img {
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+} */
 
 .hotelDetailsTexts {
   flex: 3;
@@ -103,6 +134,7 @@ p {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-top: 20px;
 }
 
 .hotelDetailsPrice > h1 {

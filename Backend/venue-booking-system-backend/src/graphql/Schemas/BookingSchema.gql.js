@@ -104,7 +104,7 @@ const BookingPermissions = {
     // getApprovedBookingsOnDate: isAuthenticated,
   },
   Mutation: {
-    // createBooking: isAuthenticated,
+    createBooking: isAuthenticated,
     // changeBookingStatus: and(isAuthenticated, isAdmin),
   },
 };

@@ -38,13 +38,8 @@ import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-// import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-// import { convertCalendarData } from "../../lib/convertCalendaeData";
-// import { ViewState } from "@devexpress/dx-react-scheduler";
-// import {} from "@devexpress/dx-react-scheduler";
+import SprialIamge from "../../constants/spiral1.png";
 
-// import { TextField } from "@mui/material";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import {
   Alert,
   AlertTitle,
@@ -238,6 +233,7 @@ const VenuePage = () => {
             ))}
           </div>
           <div className="hotelDetails">
+            <img className="spiral" src={SprialIamge} />
             <div className="hotelDetailsTexts">
               <div className="hotelDetailsTexts" style={{ marginTop: "30px" }}>
                 <h1 className="hotelTitle" style={{ color: "white" }}>

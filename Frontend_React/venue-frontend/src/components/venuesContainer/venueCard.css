@@ -14,6 +14,10 @@
   flex-direction: column;
 }
 
+.fpItem:hover {
+  scale: 108%;
+}
+
 .fpImg {
   width: 100%;
   height: 250px;
