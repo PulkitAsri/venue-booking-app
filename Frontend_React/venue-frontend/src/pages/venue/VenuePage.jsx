@@ -336,14 +336,14 @@ const VenuePage = () => {
                 {bookingData && (
                   <Alert severity="success">
                     <AlertTitle>Success</AlertTitle>
-                    Successfully Created a booking. —{" "}
+                    Successfully created a request for the slot. —{" "}
                     <strong>check it out!</strong>
                   </Alert>
                 )}
                 {bookingError && (
                   <Alert severity="error">
                     <AlertTitle>Error</AlertTitle>
-                    Couldn't create booking. — <strong>check it out!</strong>
+                    Couldn't request booking. — <strong>check it out!</strong>
                   </Alert>
                 )}
               </form>

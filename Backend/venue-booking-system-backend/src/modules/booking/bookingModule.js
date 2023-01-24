@@ -86,6 +86,7 @@ const approveRequest = async ({ bookingPk }) => {
   const booking = await Booking.findByPk(bookingPk);
   const takenSlotsOnDate = await getTakenSlotsOnDate({
     date: booking.timeSlotStart,
+    venuePk: booking.venuePk,
   });
   // console.log(takenSlotsOnDate);
 

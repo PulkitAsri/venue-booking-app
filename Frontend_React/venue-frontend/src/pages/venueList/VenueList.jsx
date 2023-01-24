@@ -44,7 +44,7 @@ const VenueList = () => {
               {data.orgForPk.orgName}'s venues
             </h1>
             {data.allVenuesForOrg.map((venue) => (
-              <VenueItem venue={venue} />
+              <VenueItem venue={venue} key={venue.pk} />
             ))}
           </div>
         </div>

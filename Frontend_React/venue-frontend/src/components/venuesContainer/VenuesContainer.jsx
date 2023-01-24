@@ -2,6 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import VenueItem from "../venueItem/VenueItem";
 import "./venueCard.css";
 import VenueCard from "./VenueCard";
+import { Link } from "react-router-dom";
 const QUERY = gql`
   query Query {
     allVenues {
@@ -27,7 +28,12 @@ const VenueContainer = () => {
   return (
     <div className="fp">
       {data.allVenues.map((venue) => (
-        <VenueCard venue={venue} org={venue.orgPk} key={venue.pk} />
+        <Link
+          to={`${venue.orgPk.pk}/venues/${venue.pk}`}
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          <VenueCard venue={venue} org={venue.orgPk} key={venue.pk} />
+        </Link>
       ))}
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./newLogin.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { LOGIN } from "../../constants/queries";
@@ -24,12 +24,20 @@ const Login = () => {
 
   const [loginFunction, { data, loading, error }] = useMutation(LOGIN);
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigateToHome();
+    }
+  }, [loading]);
+
   const handleSubmit = async (event) => {
     // event.preventDefault();
     console.log(`Logging in with email: ${email} and password: ${password}`);
-    await loginFunction({ variables: { email, password } });
-    if (data?.login) {
-      localStorage.setItem("token", data.login.token);
+    const result = await loginFunction({ variables: { email, password } });
+    console.log(result);
+    if (result.data) {
+      localStorage.setItem("token", result.data.login.token);
+      console.log("setting token");
       //set user to context
       // navigateToHome();
     }
@@ -85,6 +93,11 @@ const Login = () => {
         <a className={styles.p1} href="/signUpPage">
           Register Here
         </a>
+        <div>
+          <a className={styles.p1} href="/">
+            or continue for now
+          </a>
+        </div>
       </div>
     </div>
   );

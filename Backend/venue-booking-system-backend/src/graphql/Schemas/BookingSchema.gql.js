@@ -105,7 +105,7 @@ const BookingPermissions = {
   },
   Mutation: {
     // createBooking: isAuthenticated,
-    changeBookingStatus: and(isAuthenticated, isAdmin),
+    // changeBookingStatus: and(isAuthenticated, isAdmin),
   },
 };
 

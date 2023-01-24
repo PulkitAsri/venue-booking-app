@@ -7,8 +7,8 @@ const Navbar = () => {
         <span className="logo">VenBooker © 2023</span>
         {!localStorage.getItem("token") ? (
           <div className="navItems">
-            <button className="navButton">Register</button>
-            <button className="navButton">Login</button>
+            {/* <button className="navButton">Register</button>
+            <button className="navButton">Login</button> */}
           </div>
         ) : (
           <div className="navItems">
