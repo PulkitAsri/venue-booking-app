@@ -38,8 +38,8 @@ const Login = () => {
     if (result.data) {
       localStorage.setItem("token", result.data.login.token);
       console.log("setting token");
-      //set user to context
-      // navigateToHome();
+      //@TODO- set user to context
+      
     }
     console.log(data);
   };

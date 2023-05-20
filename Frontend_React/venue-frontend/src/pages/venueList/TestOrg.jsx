@@ -24,6 +24,10 @@ const ORG_DATA = gql`
         isAdmin
       }
     }
+    me {
+      name
+      isAdmin
+    }
   }
 `;
 
@@ -41,12 +45,15 @@ const ALL_ORGS = gql`
         email
         isAdmin
       }
+      me {
+        name
+        isAdmin
+      }
     }
   }
 `;
 
 const VenueList = () => {
-  const location = useLocation();
   const { data, loading, error } = useQuery(ORG_DATA);
 
   if (loading) return <p>Loading...</p>;
@@ -54,7 +61,7 @@ const VenueList = () => {
   return (
     <div>
       {console.log(data)}
-      <Navbar />
+      <Navbar requestingUser={data.me} />
       <Header type="list" />
       <div className="listContainer">
         <div className="listWrapper">

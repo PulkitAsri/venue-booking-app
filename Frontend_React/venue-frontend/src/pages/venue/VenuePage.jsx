@@ -233,7 +233,7 @@ const VenuePage = () => {
             ))}
           </div>
           <div className="hotelDetails">
-            <img className="spiral" src={SprialIamge} />
+            <img className="spiral" src={SprialIamge} alt="" />
             <div className="hotelDetailsTexts">
               <div className="hotelDetailsTexts" style={{ marginTop: "30px" }}>
                 <h1 className="hotelTitle" style={{ color: "white" }}>

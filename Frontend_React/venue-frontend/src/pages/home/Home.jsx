@@ -8,7 +8,7 @@ import "./home.css";
 const Home = () => {
   return (
     <div>
-      <Navbar />
+      <Navbar  />
       <Header />
       <div className="homeContainer">
         <h1 className="homeTitle">All Organizations</h1>
